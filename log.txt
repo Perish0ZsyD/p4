@@ -1,0 +1,3897 @@
+Found distributor 'Ubuntu' release '20.04'.  Continuing with installation.
+Minimum recommended memory to run this script: 1920 MBytes
+Memory on this system from /proc/meminfo:      64108 MBytes -> enough
+Minimum free disk space to run this script:    2560 MBytes
+Free disk space on this system from df output: 1705092 MBytes -> enough
+Found directory containing patches: /home/guang/zsy/p4/p4-guide/bin/patches
+Passed all sanity checks
++ set +x
+This script installs pre-compiled Debian packages of the P4_16 (and
+also P4_14) compiler, and the behavioral-model software packet
+forwarding program, that can behave as just about any legal P4
+program.
+
+It is regularly tested on freshly installed Ubuntu 20.04 systems,
+with all Ubuntu software updates as of the date of
+testing.  See this directory for log files recording the last
+date this script was tested on its supported operating systems:
+
+    https://github.com/jafingerhut/p4-guide/tree/master/bin/output
+
+As of 2021-Nov-14, the files installed by this script consume about 2
+GB of disk space.  Running the script downloads about 250 MBytes of
+data from the Internet.
+
+On a 2015 MacBook Pro with a decent speed Internet connection
+and an SSD drive, running Ubuntu Linux in a VirtualBox VM, it
+took about 3 minutes.
+
+------------------------------------------------------------
+Time and disk space used before installation begins:
++ date
+2024年 02月 27日 星期二 14:36:19 CST
++ df -h .
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/nvme0n1p2  1.8T   74G  1.7T   5% /
++ df -BM .
+Filesystem     1M-blocks   Used Available Use% Mounted on
+/dev/nvme0n1p2  1876181M 75712M  1705092M   5% /
++ lsb_release -a
+No LSB modules are available.
+Distributor ID:	Ubuntu
+Description:	Ubuntu 20.04.5 LTS
+Release:	20.04
+Codename:	focal
++ python -V
+Python 3.9.12
++ python2 -V
+Python 2.7.18
++ python3 -V
+Python 3.9.12
++ pip -V
+pip 21.2.4 from /opt/anaconda3/lib/python3.9/site-packages/pip (python 3.9)
++ pip2 -V
+./p4-guide/bin/install-p4dev-v5.sh: line 174: pip2: command not found
++ echo 'No such command in PATH: pip2'
+No such command in PATH: pip2
++ pip3 -V
+pip 21.2.4 from /opt/anaconda3/lib/python3.9/site-packages/pip (python 3.9)
++ sudo apt-get install -qq -y --no-install-recommends --fix-missing curl git wget
+Selecting previously unselected package curl.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 224536 files and directories currently installed.)
+Preparing to unpack .../curl_7.68.0-1ubuntu2.21_amd64.deb ...
+Unpacking curl (7.68.0-1ubuntu2.21) ...
+Setting up curl (7.68.0-1ubuntu2.21) ...
+Processing triggers for man-db (2.9.1-1) ...
++ export DEBIAN_FRONTEND=noninteractive
++ DEBIAN_FRONTEND=noninteractive
++ echo 'deb http://download.opensuse.org/repositories/home:/p4lang/xUbuntu_20.04/ /'
++ sudo tee /etc/apt/sources.list.d/home:p4lang.list
+deb http://download.opensuse.org/repositories/home:/p4lang/xUbuntu_20.04/ /
++ wget -qO - http://download.opensuse.org/repositories/home:/p4lang/xUbuntu_20.04/Release.key
++ sudo apt-key add -
+Warning: apt-key output should not be parsed (stdout is not a terminal)
+OK
++ sudo apt-get update -qq
++ sudo apt-get install -qq -y --no-install-recommends --fix-missing iproute2 net-tools python3 python3-pip tcpdump unzip vim xterm p4lang-p4c p4lang-bmv2 p4lang-pi
+Preconfiguring packages ...
+Selecting previously unselected package libsigsegv2:amd64.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 224543 files and directories currently installed.)
+Preparing to unpack .../000-libsigsegv2_2.12-2_amd64.deb ...
+Unpacking libsigsegv2:amd64 (2.12-2) ...
+Selecting previously unselected package m4.
+Preparing to unpack .../001-m4_1.4.18-4_amd64.deb ...
+Unpacking m4 (1.4.18-4) ...
+Selecting previously unselected package flex.
+Preparing to unpack .../002-flex_2.6.4-6.2_amd64.deb ...
+Unpacking flex (2.6.4-6.2) ...
+Preparing to unpack .../003-libssl1.1_1.1.1f-1ubuntu2.21_amd64.deb ...
+Unpacking libssl1.1:amd64 (1.1.1f-1ubuntu2.21) over (1.1.1f-1ubuntu2.20) ...
+Preparing to unpack .../004-tcpdump_4.9.3-4ubuntu0.3_amd64.deb ...
+Unpacking tcpdump (4.9.3-4ubuntu0.3) over (4.9.3-4ubuntu0.1) ...
+Selecting previously unselected package autoconf.
+Preparing to unpack .../005-autoconf_2.69-11.1_all.deb ...
+Unpacking autoconf (2.69-11.1) ...
+Selecting previously unselected package autotools-dev.
+Preparing to unpack .../006-autotools-dev_20180224.1_all.deb ...
+Unpacking autotools-dev (20180224.1) ...
+Selecting previously unselected package automake.
+Preparing to unpack .../007-automake_1%3a1.16.1-4ubuntu6_all.deb ...
+Unpacking automake (1:1.16.1-4ubuntu6) ...
+Selecting previously unselected package binfmt-support.
+Preparing to unpack .../008-binfmt-support_2.2.0-2_amd64.deb ...
+Unpacking binfmt-support (2.2.0-2) ...
+Selecting previously unselected package libllvm10:amd64.
+Preparing to unpack .../009-libllvm10_1%3a10.0.0-4ubuntu1_amd64.deb ...
+Unpacking libllvm10:amd64 (1:10.0.0-4ubuntu1) ...
+Selecting previously unselected package libclang-cpp10.
+Preparing to unpack .../010-libclang-cpp10_1%3a10.0.0-4ubuntu1_amd64.deb ...
+Unpacking libclang-cpp10 (1:10.0.0-4ubuntu1) ...
+Selecting previously unselected package libobjc4:amd64.
+Preparing to unpack .../011-libobjc4_10.5.0-1ubuntu1~20.04_amd64.deb ...
+Unpacking libobjc4:amd64 (10.5.0-1ubuntu1~20.04) ...
+Selecting previously unselected package libobjc-9-dev:amd64.
+Preparing to unpack .../012-libobjc-9-dev_9.4.0-1ubuntu1~20.04.2_amd64.deb ...
+Unpacking libobjc-9-dev:amd64 (9.4.0-1ubuntu1~20.04.2) ...
+Selecting previously unselected package libc6-i386.
+Preparing to unpack .../013-libc6-i386_2.31-0ubuntu9.14_amd64.deb ...
+Unpacking libc6-i386 (2.31-0ubuntu9.14) ...
+Replaced by files in installed package libc6:i386 (2.31-0ubuntu9.14) ...
+Selecting previously unselected package lib32gcc-s1.
+Preparing to unpack .../014-lib32gcc-s1_10.5.0-1ubuntu1~20.04_amd64.deb ...
+Unpacking lib32gcc-s1 (10.5.0-1ubuntu1~20.04) ...
+Selecting previously unselected package lib32stdc++6.
+Preparing to unpack .../015-lib32stdc++6_10.5.0-1ubuntu1~20.04_amd64.deb ...
+Unpacking lib32stdc++6 (10.5.0-1ubuntu1~20.04) ...
+Selecting previously unselected package libclang-common-10-dev.
+Preparing to unpack .../016-libclang-common-10-dev_1%3a10.0.0-4ubuntu1_amd64.deb ...
+Unpacking libclang-common-10-dev (1:10.0.0-4ubuntu1) ...
+Selecting previously unselected package libclang1-10.
+Preparing to unpack .../017-libclang1-10_1%3a10.0.0-4ubuntu1_amd64.deb ...
+Unpacking libclang1-10 (1:10.0.0-4ubuntu1) ...
+Selecting previously unselected package clang-10.
+Preparing to unpack .../018-clang-10_1%3a10.0.0-4ubuntu1_amd64.deb ...
+Unpacking clang-10 (1:10.0.0-4ubuntu1) ...
+Selecting previously unselected package clang.
+Preparing to unpack .../019-clang_1%3a10.0-50~exp1_amd64.deb ...
+Unpacking clang (1:10.0-50~exp1) ...
+Selecting previously unselected package gcc-8-base:amd64.
+Preparing to unpack .../020-gcc-8-base_8.4.0-3ubuntu2_amd64.deb ...
+Unpacking gcc-8-base:amd64 (8.4.0-3ubuntu2) ...
+Selecting previously unselected package cpp-8.
+Preparing to unpack .../021-cpp-8_8.4.0-3ubuntu2_amd64.deb ...
+Unpacking cpp-8 (8.4.0-3ubuntu2) ...
+Selecting previously unselected package libmpx2:amd64.
+Preparing to unpack .../022-libmpx2_8.4.0-3ubuntu2_amd64.deb ...
+Unpacking libmpx2:amd64 (8.4.0-3ubuntu2) ...
+Selecting previously unselected package libgcc-8-dev:amd64.
+Preparing to unpack .../023-libgcc-8-dev_8.4.0-3ubuntu2_amd64.deb ...
+Unpacking libgcc-8-dev:amd64 (8.4.0-3ubuntu2) ...
+Selecting previously unselected package gcc-8.
+Preparing to unpack .../024-gcc-8_8.4.0-3ubuntu2_amd64.deb ...
+Unpacking gcc-8 (8.4.0-3ubuntu2) ...
+Selecting previously unselected package libgfortran5:amd64.
+Preparing to unpack .../025-libgfortran5_10.5.0-1ubuntu1~20.04_amd64.deb ...
+Unpacking libgfortran5:amd64 (10.5.0-1ubuntu1~20.04) ...
+Selecting previously unselected package libgfortran-8-dev:amd64.
+Preparing to unpack .../026-libgfortran-8-dev_8.4.0-3ubuntu2_amd64.deb ...
+Unpacking libgfortran-8-dev:amd64 (8.4.0-3ubuntu2) ...
+Selecting previously unselected package gfortran-8.
+Preparing to unpack .../027-gfortran-8_8.4.0-3ubuntu2_amd64.deb ...
+Unpacking gfortran-8 (8.4.0-3ubuntu2) ...
+Preparing to unpack .../028-libnl-route-3-200_3.4.0-1ubuntu0.1_amd64.deb ...
+Unpacking libnl-route-3-200:amd64 (3.4.0-1ubuntu0.1) over (3.4.0-1) ...
+Preparing to unpack .../029-libnl-genl-3-200_3.4.0-1ubuntu0.1_amd64.deb ...
+Unpacking libnl-genl-3-200:amd64 (3.4.0-1ubuntu0.1) over (3.4.0-1) ...
+Preparing to unpack .../030-libnl-3-200_3.4.0-1ubuntu0.1_amd64.deb ...
+Unpacking libnl-3-200:amd64 (3.4.0-1ubuntu0.1) over (3.4.0-1) ...
+Selecting previously unselected package libibverbs1:amd64.
+Preparing to unpack .../031-libibverbs1_28.0-1ubuntu1_amd64.deb ...
+Unpacking libibverbs1:amd64 (28.0-1ubuntu1) ...
+Selecting previously unselected package ibverbs-providers:amd64.
+Preparing to unpack .../032-ibverbs-providers_28.0-1ubuntu1_amd64.deb ...
+Unpacking ibverbs-providers:amd64 (28.0-1ubuntu1) ...
+Selecting previously unselected package icu-devtools.
+Preparing to unpack .../033-icu-devtools_66.1-2ubuntu2.1_amd64.deb ...
+Unpacking icu-devtools (66.1-2ubuntu2.1) ...
+Selecting previously unselected package libboost1.71-dev:amd64.
+Preparing to unpack .../034-libboost1.71-dev_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-dev:amd64.
+Preparing to unpack .../035-libboost-dev_1.71.0.0ubuntu2_amd64.deb ...
+Unpacking libboost-dev:amd64 (1.71.0.0ubuntu2) ...
+Selecting previously unselected package libboost1.71-tools-dev.
+Preparing to unpack .../036-libboost1.71-tools-dev_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost1.71-tools-dev (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-tools-dev.
+Preparing to unpack .../037-libboost-tools-dev_1.71.0.0ubuntu2_amd64.deb ...
+Unpacking libboost-tools-dev (1.71.0.0ubuntu2) ...
+Selecting previously unselected package libboost-atomic1.71.0:amd64.
+Preparing to unpack .../038-libboost-atomic1.71.0_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-atomic1.71.0:amd64 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-atomic1.71-dev:amd64.
+Preparing to unpack .../039-libboost-atomic1.71-dev_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-atomic1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-atomic-dev:amd64.
+Preparing to unpack .../040-libboost-atomic-dev_1.71.0.0ubuntu2_amd64.deb ...
+Unpacking libboost-atomic-dev:amd64 (1.71.0.0ubuntu2) ...
+Selecting previously unselected package libboost-chrono1.71.0:amd64.
+Preparing to unpack .../041-libboost-chrono1.71.0_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-chrono1.71.0:amd64 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-chrono1.71-dev:amd64.
+Preparing to unpack .../042-libboost-chrono1.71-dev_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-chrono1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-chrono-dev:amd64.
+Preparing to unpack .../043-libboost-chrono-dev_1.71.0.0ubuntu2_amd64.deb ...
+Unpacking libboost-chrono-dev:amd64 (1.71.0.0ubuntu2) ...
+Selecting previously unselected package libboost-container1.71.0:amd64.
+Preparing to unpack .../044-libboost-container1.71.0_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-container1.71.0:amd64 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-container1.71-dev:amd64.
+Preparing to unpack .../045-libboost-container1.71-dev_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-container1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-container-dev:amd64.
+Preparing to unpack .../046-libboost-container-dev_1.71.0.0ubuntu2_amd64.deb ...
+Unpacking libboost-container-dev:amd64 (1.71.0.0ubuntu2) ...
+Selecting previously unselected package libboost-serialization1.71.0:amd64.
+Preparing to unpack .../047-libboost-serialization1.71.0_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-serialization1.71.0:amd64 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-serialization1.71-dev:amd64.
+Preparing to unpack .../048-libboost-serialization1.71-dev_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-serialization1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-date-time1.71-dev:amd64.
+Preparing to unpack .../049-libboost-date-time1.71-dev_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-date-time1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-system1.71.0:amd64.
+Preparing to unpack .../050-libboost-system1.71.0_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-system1.71.0:amd64 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-system1.71-dev:amd64.
+Preparing to unpack .../051-libboost-system1.71-dev_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-system1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-thread1.71-dev:amd64.
+Preparing to unpack .../052-libboost-thread1.71-dev_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-thread1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-context1.71.0:amd64.
+Preparing to unpack .../053-libboost-context1.71.0_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-context1.71.0:amd64 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-context1.71-dev:amd64.
+Preparing to unpack .../054-libboost-context1.71-dev_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-context1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-context-dev:amd64.
+Preparing to unpack .../055-libboost-context-dev_1.71.0.0ubuntu2_amd64.deb ...
+Unpacking libboost-context-dev:amd64 (1.71.0.0ubuntu2) ...
+Selecting previously unselected package libboost-coroutine1.71.0:amd64.
+Preparing to unpack .../056-libboost-coroutine1.71.0_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-coroutine1.71.0:amd64 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-coroutine1.71-dev:amd64.
+Preparing to unpack .../057-libboost-coroutine1.71-dev_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-coroutine1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-coroutine-dev:amd64.
+Preparing to unpack .../058-libboost-coroutine-dev_1.71.0.0ubuntu2_amd64.deb ...
+Unpacking libboost-coroutine-dev:amd64 (1.71.0.0ubuntu2) ...
+Selecting previously unselected package libboost-date-time-dev:amd64.
+Preparing to unpack .../059-libboost-date-time-dev_1.71.0.0ubuntu2_amd64.deb ...
+Unpacking libboost-date-time-dev:amd64 (1.71.0.0ubuntu2) ...
+Selecting previously unselected package libboost-exception1.71-dev:amd64.
+Preparing to unpack .../060-libboost-exception1.71-dev_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-exception1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-exception-dev:amd64.
+Preparing to unpack .../061-libboost-exception-dev_1.71.0.0ubuntu2_amd64.deb ...
+Unpacking libboost-exception-dev:amd64 (1.71.0.0ubuntu2) ...
+Selecting previously unselected package libboost-filesystem1.71-dev:amd64.
+Preparing to unpack .../062-libboost-filesystem1.71-dev_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-filesystem1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-fiber1.71.0:amd64.
+Preparing to unpack .../063-libboost-fiber1.71.0_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-fiber1.71.0:amd64 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-fiber1.71-dev:amd64.
+Preparing to unpack .../064-libboost-fiber1.71-dev_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-fiber1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-fiber-dev:amd64.
+Preparing to unpack .../065-libboost-fiber-dev_1.71.0.0ubuntu2_amd64.deb ...
+Unpacking libboost-fiber-dev:amd64 (1.71.0.0ubuntu2) ...
+Selecting previously unselected package libboost-filesystem-dev:amd64.
+Preparing to unpack .../066-libboost-filesystem-dev_1.71.0.0ubuntu2_amd64.deb ...
+Unpacking libboost-filesystem-dev:amd64 (1.71.0.0ubuntu2) ...
+Selecting previously unselected package libboost-regex1.71.0:amd64.
+Preparing to unpack .../067-libboost-regex1.71.0_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-regex1.71.0:amd64 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-graph1.71.0:amd64.
+Preparing to unpack .../068-libboost-graph1.71.0_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-graph1.71.0:amd64 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libicu-dev:amd64.
+Preparing to unpack .../069-libicu-dev_66.1-2ubuntu2.1_amd64.deb ...
+Unpacking libicu-dev:amd64 (66.1-2ubuntu2.1) ...
+Selecting previously unselected package libboost-regex1.71-dev:amd64.
+Preparing to unpack .../070-libboost-regex1.71-dev_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-regex1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-test1.71.0:amd64.
+Preparing to unpack .../071-libboost-test1.71.0_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-test1.71.0:amd64 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-test1.71-dev:amd64.
+Preparing to unpack .../072-libboost-test1.71-dev_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-test1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-graph1.71-dev:amd64.
+Preparing to unpack .../073-libboost-graph1.71-dev_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-graph1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-graph-dev:amd64.
+Preparing to unpack .../074-libboost-graph-dev_1.71.0.0ubuntu2_amd64.deb ...
+Unpacking libboost-graph-dev:amd64 (1.71.0.0ubuntu2) ...
+Selecting previously unselected package libevent-core-2.1-7:amd64.
+Preparing to unpack .../075-libevent-core-2.1-7_2.1.11-stable-1_amd64.deb ...
+Unpacking libevent-core-2.1-7:amd64 (2.1.11-stable-1) ...
+Selecting previously unselected package libevent-pthreads-2.1-7:amd64.
+Preparing to unpack .../076-libevent-pthreads-2.1-7_2.1.11-stable-1_amd64.deb ...
+Unpacking libevent-pthreads-2.1-7:amd64 (2.1.11-stable-1) ...
+Selecting previously unselected package libpsm-infinipath1.
+Preparing to unpack .../077-libpsm-infinipath1_3.3+20.604758e7-6_amd64.deb ...
+Unpacking libpsm-infinipath1 (3.3+20.604758e7-6) ...
+Selecting previously unselected package libpsm2-2.
+Preparing to unpack .../078-libpsm2-2_11.2.86-1_amd64.deb ...
+Unpacking libpsm2-2 (11.2.86-1) ...
+Selecting previously unselected package librdmacm1:amd64.
+Preparing to unpack .../079-librdmacm1_28.0-1ubuntu1_amd64.deb ...
+Unpacking librdmacm1:amd64 (28.0-1ubuntu1) ...
+Selecting previously unselected package libfabric1.
+Preparing to unpack .../080-libfabric1_1.6.2-3ubuntu0.1_amd64.deb ...
+Unpacking libfabric1 (1.6.2-3ubuntu0.1) ...
+Selecting previously unselected package libhwloc15:amd64.
+Preparing to unpack .../081-libhwloc15_2.1.0+dfsg-4_amd64.deb ...
+Unpacking libhwloc15:amd64 (2.1.0+dfsg-4) ...
+Selecting previously unselected package ocl-icd-libopencl1:amd64.
+Preparing to unpack .../082-ocl-icd-libopencl1_2.2.11-1ubuntu1_amd64.deb ...
+Unpacking ocl-icd-libopencl1:amd64 (2.2.11-1ubuntu1) ...
+Selecting previously unselected package libhwloc-plugins:amd64.
+Preparing to unpack .../083-libhwloc-plugins_2.1.0+dfsg-4_amd64.deb ...
+Unpacking libhwloc-plugins:amd64 (2.1.0+dfsg-4) ...
+Selecting previously unselected package libpmix2:amd64.
+Preparing to unpack .../084-libpmix2_3.1.5-1_amd64.deb ...
+Unpacking libpmix2:amd64 (3.1.5-1) ...
+Selecting previously unselected package libopenmpi3:amd64.
+Preparing to unpack .../085-libopenmpi3_4.0.3-0ubuntu1_amd64.deb ...
+Unpacking libopenmpi3:amd64 (4.0.3-0ubuntu1) ...
+Selecting previously unselected package libboost-mpi1.71.0.
+Preparing to unpack .../086-libboost-mpi1.71.0_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-mpi1.71.0 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-graph-parallel1.71.0.
+Preparing to unpack .../087-libboost-graph-parallel1.71.0_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-graph-parallel1.71.0 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-graph-parallel1.71-dev.
+Preparing to unpack .../088-libboost-graph-parallel1.71-dev_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-graph-parallel1.71-dev (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-graph-parallel-dev.
+Preparing to unpack .../089-libboost-graph-parallel-dev_1.71.0.0ubuntu2_amd64.deb ...
+Unpacking libboost-graph-parallel-dev (1.71.0.0ubuntu2) ...
+Selecting previously unselected package libboost-iostreams1.71-dev:amd64.
+Preparing to unpack .../090-libboost-iostreams1.71-dev_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-iostreams1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-iostreams-dev:amd64.
+Preparing to unpack .../091-libboost-iostreams-dev_1.71.0.0ubuntu2_amd64.deb ...
+Unpacking libboost-iostreams-dev:amd64 (1.71.0.0ubuntu2) ...
+Selecting previously unselected package libboost-locale1.71-dev:amd64.
+Preparing to unpack .../092-libboost-locale1.71-dev_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-locale1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-locale-dev:amd64.
+Preparing to unpack .../093-libboost-locale-dev_1.71.0.0ubuntu2_amd64.deb ...
+Unpacking libboost-locale-dev:amd64 (1.71.0.0ubuntu2) ...
+Selecting previously unselected package libboost-log1.71.0.
+Preparing to unpack .../094-libboost-log1.71.0_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-log1.71.0 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-log1.71-dev.
+Preparing to unpack .../095-libboost-log1.71-dev_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-log1.71-dev (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-log-dev.
+Preparing to unpack .../096-libboost-log-dev_1.71.0.0ubuntu2_amd64.deb ...
+Unpacking libboost-log-dev (1.71.0.0ubuntu2) ...
+Selecting previously unselected package libboost-math1.71.0:amd64.
+Preparing to unpack .../097-libboost-math1.71.0_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-math1.71.0:amd64 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-math1.71-dev:amd64.
+Preparing to unpack .../098-libboost-math1.71-dev_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-math1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-math-dev:amd64.
+Preparing to unpack .../099-libboost-math-dev_1.71.0.0ubuntu2_amd64.deb ...
+Unpacking libboost-math-dev:amd64 (1.71.0.0ubuntu2) ...
+Selecting previously unselected package openmpi-common.
+Preparing to unpack .../100-openmpi-common_4.0.3-0ubuntu1_all.deb ...
+Unpacking openmpi-common (4.0.3-0ubuntu1) ...
+Selecting previously unselected package libnl-3-dev:amd64.
+Preparing to unpack .../101-libnl-3-dev_3.4.0-1ubuntu0.1_amd64.deb ...
+Unpacking libnl-3-dev:amd64 (3.4.0-1ubuntu0.1) ...
+Selecting previously unselected package libnl-route-3-dev:amd64.
+Preparing to unpack .../102-libnl-route-3-dev_3.4.0-1ubuntu0.1_amd64.deb ...
+Unpacking libnl-route-3-dev:amd64 (3.4.0-1ubuntu0.1) ...
+Selecting previously unselected package libibverbs-dev:amd64.
+Preparing to unpack .../103-libibverbs-dev_28.0-1ubuntu1_amd64.deb ...
+Unpacking libibverbs-dev:amd64 (28.0-1ubuntu1) ...
+Selecting previously unselected package libnuma-dev:amd64.
+Preparing to unpack .../104-libnuma-dev_2.0.12-1_amd64.deb ...
+Unpacking libnuma-dev:amd64 (2.0.12-1) ...
+Selecting previously unselected package libltdl-dev:amd64.
+Preparing to unpack .../105-libltdl-dev_2.4.6-14_amd64.deb ...
+Unpacking libltdl-dev:amd64 (2.4.6-14) ...
+Selecting previously unselected package libhwloc-dev:amd64.
+Preparing to unpack .../106-libhwloc-dev_2.1.0+dfsg-4_amd64.deb ...
+Unpacking libhwloc-dev:amd64 (2.1.0+dfsg-4) ...
+Selecting previously unselected package libevent-extra-2.1-7:amd64.
+Preparing to unpack .../107-libevent-extra-2.1-7_2.1.11-stable-1_amd64.deb ...
+Unpacking libevent-extra-2.1-7:amd64 (2.1.11-stable-1) ...
+Selecting previously unselected package libevent-openssl-2.1-7:amd64.
+Preparing to unpack .../108-libevent-openssl-2.1-7_2.1.11-stable-1_amd64.deb ...
+Unpacking libevent-openssl-2.1-7:amd64 (2.1.11-stable-1) ...
+Selecting previously unselected package libevent-dev.
+Preparing to unpack .../109-libevent-dev_2.1.11-stable-1_amd64.deb ...
+Unpacking libevent-dev (2.1.11-stable-1) ...
+Selecting previously unselected package openmpi-bin.
+Preparing to unpack .../110-openmpi-bin_4.0.3-0ubuntu1_amd64.deb ...
+Unpacking openmpi-bin (4.0.3-0ubuntu1) ...
+Selecting previously unselected package libopenmpi-dev:amd64.
+Preparing to unpack .../111-libopenmpi-dev_4.0.3-0ubuntu1_amd64.deb ...
+Unpacking libopenmpi-dev:amd64 (4.0.3-0ubuntu1) ...
+Selecting previously unselected package mpi-default-dev.
+Preparing to unpack .../112-mpi-default-dev_1.13_amd64.deb ...
+Unpacking mpi-default-dev (1.13) ...
+Selecting previously unselected package libboost-mpi1.71-dev.
+Preparing to unpack .../113-libboost-mpi1.71-dev_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-mpi1.71-dev (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-mpi-dev.
+Preparing to unpack .../114-libboost-mpi-dev_1.71.0.0ubuntu2_amd64.deb ...
+Unpacking libboost-mpi-dev (1.71.0.0ubuntu2) ...
+Selecting previously unselected package libboost-python1.71.0.
+Preparing to unpack .../115-libboost-python1.71.0_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-python1.71.0 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package mpi-default-bin.
+Preparing to unpack .../116-mpi-default-bin_1.13_amd64.deb ...
+Unpacking mpi-default-bin (1.13) ...
+Selecting previously unselected package libboost-mpi-python1.71.0.
+Preparing to unpack .../117-libboost-mpi-python1.71.0_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-mpi-python1.71.0 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-mpi-python1.71-dev.
+Preparing to unpack .../118-libboost-mpi-python1.71-dev_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-mpi-python1.71-dev (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-mpi-python-dev.
+Preparing to unpack .../119-libboost-mpi-python-dev_1.71.0.0ubuntu2_amd64.deb ...
+Unpacking libboost-mpi-python-dev (1.71.0.0ubuntu2) ...
+Selecting previously unselected package libboost-numpy1.71.0.
+Preparing to unpack .../120-libboost-numpy1.71.0_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-numpy1.71.0 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-numpy1.71-dev.
+Preparing to unpack .../121-libboost-numpy1.71-dev_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-numpy1.71-dev (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-numpy-dev.
+Preparing to unpack .../122-libboost-numpy-dev_1.71.0.0ubuntu2_amd64.deb ...
+Unpacking libboost-numpy-dev (1.71.0.0ubuntu2) ...
+Selecting previously unselected package libboost-program-options1.71.0:amd64.
+Preparing to unpack .../123-libboost-program-options1.71.0_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-program-options1.71.0:amd64 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-program-options1.71-dev:amd64.
+Preparing to unpack .../124-libboost-program-options1.71-dev_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-program-options1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-program-options-dev:amd64.
+Preparing to unpack .../125-libboost-program-options-dev_1.71.0.0ubuntu2_amd64.deb ...
+Unpacking libboost-program-options-dev:amd64 (1.71.0.0ubuntu2) ...
+Selecting previously unselected package libboost-python1.71-dev.
+Preparing to unpack .../126-libboost-python1.71-dev_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-python1.71-dev (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-python-dev.
+Preparing to unpack .../127-libboost-python-dev_1.71.0.0ubuntu2_amd64.deb ...
+Unpacking libboost-python-dev (1.71.0.0ubuntu2) ...
+Selecting previously unselected package libboost-random1.71.0:amd64.
+Preparing to unpack .../128-libboost-random1.71.0_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-random1.71.0:amd64 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-random1.71-dev:amd64.
+Preparing to unpack .../129-libboost-random1.71-dev_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-random1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-random-dev:amd64.
+Preparing to unpack .../130-libboost-random-dev_1.71.0.0ubuntu2_amd64.deb ...
+Unpacking libboost-random-dev:amd64 (1.71.0.0ubuntu2) ...
+Selecting previously unselected package libboost-regex-dev:amd64.
+Preparing to unpack .../131-libboost-regex-dev_1.71.0.0ubuntu2_amd64.deb ...
+Unpacking libboost-regex-dev:amd64 (1.71.0.0ubuntu2) ...
+Selecting previously unselected package libboost-serialization-dev:amd64.
+Preparing to unpack .../132-libboost-serialization-dev_1.71.0.0ubuntu2_amd64.deb ...
+Unpacking libboost-serialization-dev:amd64 (1.71.0.0ubuntu2) ...
+Selecting previously unselected package libboost-stacktrace1.71.0:amd64.
+Preparing to unpack .../133-libboost-stacktrace1.71.0_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-stacktrace1.71.0:amd64 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-stacktrace1.71-dev:amd64.
+Preparing to unpack .../134-libboost-stacktrace1.71-dev_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-stacktrace1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-stacktrace-dev:amd64.
+Preparing to unpack .../135-libboost-stacktrace-dev_1.71.0.0ubuntu2_amd64.deb ...
+Unpacking libboost-stacktrace-dev:amd64 (1.71.0.0ubuntu2) ...
+Selecting previously unselected package libboost-system-dev:amd64.
+Preparing to unpack .../136-libboost-system-dev_1.71.0.0ubuntu2_amd64.deb ...
+Unpacking libboost-system-dev:amd64 (1.71.0.0ubuntu2) ...
+Selecting previously unselected package libboost-test-dev:amd64.
+Preparing to unpack .../137-libboost-test-dev_1.71.0.0ubuntu2_amd64.deb ...
+Unpacking libboost-test-dev:amd64 (1.71.0.0ubuntu2) ...
+Selecting previously unselected package libboost-thread-dev:amd64.
+Preparing to unpack .../138-libboost-thread-dev_1.71.0.0ubuntu2_amd64.deb ...
+Unpacking libboost-thread-dev:amd64 (1.71.0.0ubuntu2) ...
+Selecting previously unselected package libboost-timer1.71.0:amd64.
+Preparing to unpack .../139-libboost-timer1.71.0_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-timer1.71.0:amd64 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-timer1.71-dev:amd64.
+Preparing to unpack .../140-libboost-timer1.71-dev_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-timer1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-timer-dev:amd64.
+Preparing to unpack .../141-libboost-timer-dev_1.71.0.0ubuntu2_amd64.deb ...
+Unpacking libboost-timer-dev:amd64 (1.71.0.0ubuntu2) ...
+Selecting previously unselected package libboost-type-erasure1.71.0:amd64.
+Preparing to unpack .../142-libboost-type-erasure1.71.0_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-type-erasure1.71.0:amd64 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-type-erasure1.71-dev:amd64.
+Preparing to unpack .../143-libboost-type-erasure1.71-dev_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-type-erasure1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-type-erasure-dev:amd64.
+Preparing to unpack .../144-libboost-type-erasure-dev_1.71.0.0ubuntu2_amd64.deb ...
+Unpacking libboost-type-erasure-dev:amd64 (1.71.0.0ubuntu2) ...
+Selecting previously unselected package libboost-wave1.71.0:amd64.
+Preparing to unpack .../145-libboost-wave1.71.0_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-wave1.71.0:amd64 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-wave1.71-dev:amd64.
+Preparing to unpack .../146-libboost-wave1.71-dev_1.71.0-6ubuntu6_amd64.deb ...
+Unpacking libboost-wave1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Selecting previously unselected package libboost-wave-dev:amd64.
+Preparing to unpack .../147-libboost-wave-dev_1.71.0.0ubuntu2_amd64.deb ...
+Unpacking libboost-wave-dev:amd64 (1.71.0.0ubuntu2) ...
+Selecting previously unselected package libboost-all-dev.
+Preparing to unpack .../148-libboost-all-dev_1.71.0.0ubuntu2_amd64.deb ...
+Unpacking libboost-all-dev (1.71.0.0ubuntu2) ...
+Selecting previously unselected package libbpf0:amd64.
+Preparing to unpack .../149-libbpf0_1%3a0.5.0-1_amd64.deb ...
+Unpacking libbpf0:amd64 (1:0.5.0-1) ...
+Selecting previously unselected package libelf-dev:amd64.
+Preparing to unpack .../150-libelf-dev_0.176-1.1ubuntu0.1_amd64.deb ...
+Unpacking libelf-dev:amd64 (0.176-1.1ubuntu0.1) ...
+Selecting previously unselected package libbpf-dev:amd64.
+Preparing to unpack .../151-libbpf-dev_1%3a0.5.0-1_amd64.deb ...
+Unpacking libbpf-dev:amd64 (1:0.5.0-1) ...
+Selecting previously unselected package libdouble-conversion3:amd64.
+Preparing to unpack .../152-libdouble-conversion3_3.1.5-4ubuntu1_amd64.deb ...
+Unpacking libdouble-conversion3:amd64 (3.1.5-4ubuntu1) ...
+Selecting previously unselected package libfl2:amd64.
+Preparing to unpack .../153-libfl2_2.6.4-6.2_amd64.deb ...
+Unpacking libfl2:amd64 (2.6.4-6.2) ...
+Selecting previously unselected package libfl-dev:amd64.
+Preparing to unpack .../154-libfl-dev_2.6.4-6.2_amd64.deb ...
+Unpacking libfl-dev:amd64 (2.6.4-6.2) ...
+Selecting previously unselected package libgc-dev:amd64.
+Preparing to unpack .../155-libgc-dev_1%3a7.6.4-0.4ubuntu1_amd64.deb ...
+Unpacking libgc-dev:amd64 (1:7.6.4-0.4ubuntu1) ...
+Selecting previously unselected package libgmpxx4ldbl:amd64.
+Preparing to unpack .../156-libgmpxx4ldbl_2%3a6.2.0+dfsg-4ubuntu0.1_amd64.deb ...
+Unpacking libgmpxx4ldbl:amd64 (2:6.2.0+dfsg-4ubuntu0.1) ...
+Selecting previously unselected package libgmp-dev:amd64.
+Preparing to unpack .../157-libgmp-dev_2%3a6.2.0+dfsg-4ubuntu0.1_amd64.deb ...
+Unpacking libgmp-dev:amd64 (2:6.2.0+dfsg-4ubuntu0.1) ...
+Selecting previously unselected package libc-ares2:amd64.
+Preparing to unpack .../158-libc-ares2_1.15.0-1ubuntu0.4_amd64.deb ...
+Unpacking libc-ares2:amd64 (1.15.0-1ubuntu0.4) ...
+Selecting previously unselected package libgrpc6:amd64.
+Preparing to unpack .../159-libgrpc6_1.16.1-1ubuntu5_amd64.deb ...
+Unpacking libgrpc6:amd64 (1.16.1-1ubuntu5) ...
+Selecting previously unselected package libgrpc++1:amd64.
+Preparing to unpack .../160-libgrpc++1_1.16.1-1ubuntu5_amd64.deb ...
+Unpacking libgrpc++1:amd64 (1.16.1-1ubuntu5) ...
+Selecting previously unselected package libgrpc-dev:amd64.
+Preparing to unpack .../161-libgrpc-dev_1.16.1-1ubuntu5_amd64.deb ...
+Unpacking libgrpc-dev:amd64 (1.16.1-1ubuntu5) ...
+Selecting previously unselected package libgrpc++-dev:amd64.
+Preparing to unpack .../162-libgrpc++-dev_1.16.1-1ubuntu5_amd64.deb ...
+Unpacking libgrpc++-dev:amd64 (1.16.1-1ubuntu5) ...
+Selecting previously unselected package libnanomsg5.
+Preparing to unpack .../163-libnanomsg5_1.1.5+dfsg-1_amd64.deb ...
+Unpacking libnanomsg5 (1.1.5+dfsg-1) ...
+Selecting previously unselected package libpcap0.8-dev:amd64.
+Preparing to unpack .../164-libpcap0.8-dev_1.9.1-3_amd64.deb ...
+Unpacking libpcap0.8-dev:amd64 (1.9.1-3) ...
+Selecting previously unselected package libpcap-dev:amd64.
+Preparing to unpack .../165-libpcap-dev_1.9.1-3_amd64.deb ...
+Unpacking libpcap-dev:amd64 (1.9.1-3) ...
+Selecting previously unselected package libpcre2-16-0:amd64.
+Preparing to unpack .../166-libpcre2-16-0_10.34-7ubuntu0.1_amd64.deb ...
+Unpacking libpcre2-16-0:amd64 (10.34-7ubuntu0.1) ...
+Selecting previously unselected package libprotobuf-lite17:amd64.
+Preparing to unpack .../167-libprotobuf-lite17_3.6.1.3-2ubuntu5.2_amd64.deb ...
+Unpacking libprotobuf-lite17:amd64 (3.6.1.3-2ubuntu5.2) ...
+Selecting previously unselected package libprotoc17:amd64.
+Preparing to unpack .../168-libprotoc17_3.6.1.3-2ubuntu5.2_amd64.deb ...
+Unpacking libprotoc17:amd64 (3.6.1.3-2ubuntu5.2) ...
+Selecting previously unselected package libqt5core5a:amd64.
+Preparing to unpack .../169-libqt5core5a_5.12.8+dfsg-0ubuntu2.1_amd64.deb ...
+Unpacking libqt5core5a:amd64 (5.12.8+dfsg-0ubuntu2.1) ...
+Selecting previously unselected package libqt5dbus5:amd64.
+Preparing to unpack .../170-libqt5dbus5_5.12.8+dfsg-0ubuntu2.1_amd64.deb ...
+Unpacking libqt5dbus5:amd64 (5.12.8+dfsg-0ubuntu2.1) ...
+Selecting previously unselected package libqt5network5:amd64.
+Preparing to unpack .../171-libqt5network5_5.12.8+dfsg-0ubuntu2.1_amd64.deb ...
+Unpacking libqt5network5:amd64 (5.12.8+dfsg-0ubuntu2.1) ...
+Selecting previously unselected package libssl-dev:amd64.
+Preparing to unpack .../172-libssl-dev_1.1.1f-1ubuntu2.21_amd64.deb ...
+Unpacking libssl-dev:amd64 (1.1.1f-1ubuntu2.21) ...
+Selecting previously unselected package libthrift-0.13.0.
+Preparing to unpack .../173-libthrift-0.13.0_0.13.0-2build2_amd64.deb ...
+Unpacking libthrift-0.13.0 (0.13.0-2build2) ...
+Selecting previously unselected package libthrift-dev.
+Preparing to unpack .../174-libthrift-dev_0.13.0-2build2_amd64.deb ...
+Unpacking libthrift-dev (0.13.0-2build2) ...
+Selecting previously unselected package libtool.
+Preparing to unpack .../175-libtool_2.4.6-14_all.deb ...
+Unpacking libtool (2.4.6-14) ...
+Selecting previously unselected package libutempter0:amd64.
+Preparing to unpack .../176-libutempter0_1.1.6-4_amd64.deb ...
+Unpacking libutempter0:amd64 (1.1.6-4) ...
+Selecting previously unselected package llvm-10-runtime.
+Preparing to unpack .../177-llvm-10-runtime_1%3a10.0.0-4ubuntu1_amd64.deb ...
+Unpacking llvm-10-runtime (1:10.0.0-4ubuntu1) ...
+Selecting previously unselected package llvm-runtime.
+Preparing to unpack .../178-llvm-runtime_1%3a10.0-50~exp1_amd64.deb ...
+Unpacking llvm-runtime (1:10.0-50~exp1) ...
+Selecting previously unselected package libpfm4:amd64.
+Preparing to unpack .../179-libpfm4_4.10.1+git20-g7700f49-2_amd64.deb ...
+Unpacking libpfm4:amd64 (4.10.1+git20-g7700f49-2) ...
+Selecting previously unselected package llvm-10.
+Preparing to unpack .../180-llvm-10_1%3a10.0.0-4ubuntu1_amd64.deb ...
+Unpacking llvm-10 (1:10.0.0-4ubuntu1) ...
+Selecting previously unselected package llvm.
+Preparing to unpack .../181-llvm_1%3a10.0-50~exp1_amd64.deb ...
+Unpacking llvm (1:10.0-50~exp1) ...
+Selecting previously unselected package libprotobuf-dev:amd64.
+Preparing to unpack .../182-libprotobuf-dev_3.6.1.3-2ubuntu5.2_amd64.deb ...
+Unpacking libprotobuf-dev:amd64 (3.6.1.3-2ubuntu5.2) ...
+Selecting previously unselected package libprotoc-dev:amd64.
+Preparing to unpack .../183-libprotoc-dev_3.6.1.3-2ubuntu5.2_amd64.deb ...
+Unpacking libprotoc-dev:amd64 (3.6.1.3-2ubuntu5.2) ...
+Selecting previously unselected package protobuf-compiler.
+Preparing to unpack .../184-protobuf-compiler_3.6.1.3-2ubuntu5.2_amd64.deb ...
+Unpacking protobuf-compiler (3.6.1.3-2ubuntu5.2) ...
+Selecting previously unselected package protobuf-compiler-grpc.
+Preparing to unpack .../185-protobuf-compiler-grpc_1.16.1-1ubuntu5_amd64.deb ...
+Unpacking protobuf-compiler-grpc (1.16.1-1ubuntu5) ...
+Selecting previously unselected package python3-grpcio.
+Preparing to unpack .../186-python3-grpcio_1.16.1-1ubuntu5_amd64.deb ...
+Unpacking python3-grpcio (1.16.1-1ubuntu5) ...
+Selecting previously unselected package p4lang-pi.
+Preparing to unpack .../187-p4lang-pi_0.1.0-15_amd64.deb ...
+Unpacking p4lang-pi (0.1.0-15) ...
+Selecting previously unselected package libnanomsg-dev.
+Preparing to unpack .../188-libnanomsg-dev_1.1.5+dfsg-1_amd64.deb ...
+Unpacking libnanomsg-dev (1.1.5+dfsg-1) ...
+Selecting previously unselected package python3-thrift.
+Preparing to unpack .../189-python3-thrift_0.13.0-2build2_amd64.deb ...
+Unpacking python3-thrift (0.13.0-2build2) ...
+Selecting previously unselected package thrift-compiler.
+Preparing to unpack .../190-thrift-compiler_0.13.0-2build2_amd64.deb ...
+Unpacking thrift-compiler (0.13.0-2build2) ...
+Selecting previously unselected package p4lang-bmv2.
+Preparing to unpack .../191-p4lang-bmv2_1.15.0-7_amd64.deb ...
+Unpacking p4lang-bmv2 (1.15.0-7) ...
+Selecting previously unselected package python3-pyroute2.
+Preparing to unpack .../192-python3-pyroute2_0.5.9-0ubuntu2_all.deb ...
+Unpacking python3-pyroute2 (0.5.9-0ubuntu2) ...
+Selecting previously unselected package python3-ply.
+Preparing to unpack .../193-python3-ply_3.11-3ubuntu0.1_all.deb ...
+Unpacking python3-ply (3.11-3ubuntu0.1) ...
+Selecting previously unselected package python3-scapy.
+Preparing to unpack .../194-python3-scapy_2.4.3-4_all.deb ...
+Unpacking python3-scapy (2.4.3-4) ...
+Selecting previously unselected package p4lang-p4c.
+Preparing to unpack .../195-p4lang-p4c_1.2.4.2-2_amd64.deb ...
+Unpacking p4lang-p4c (1.2.4.2-2) ...
+Preparing to unpack .../196-unzip_6.0-25ubuntu1.2_amd64.deb ...
+Unpacking unzip (6.0-25ubuntu1.2) over (6.0-25ubuntu1.1) ...
+Selecting previously unselected package xterm.
+Preparing to unpack .../197-xterm_353-1ubuntu1.20.04.2_amd64.deb ...
+Unpacking xterm (353-1ubuntu1.20.04.2) ...
+Setting up libboost1.71-tools-dev (1.71.0-6ubuntu6) ...
+Setting up python3-pyroute2 (0.5.9-0ubuntu2) ...
+/usr/lib/python3/dist-packages/pyroute2/ndb/objects/interface.py:318: SyntaxWarning: "is" with a literal. Did you mean "=="?
+  setns = self.state.get() is 'setns'
+Setting up libboost-stacktrace1.71.0:amd64 (1.71.0-6ubuntu6) ...
+Setting up libdouble-conversion3:amd64 (3.1.5-4ubuntu1) ...
+Setting up libprotoc17:amd64 (3.6.1.3-2ubuntu5.2) ...
+Setting up protobuf-compiler (3.6.1.3-2ubuntu5.2) ...
+Setting up libnanomsg5 (1.1.5+dfsg-1) ...
+Setting up libboost-container1.71.0:amd64 (1.71.0-6ubuntu6) ...
+Setting up libprotobuf-lite17:amd64 (3.6.1.3-2ubuntu5.2) ...
+Setting up libssl1.1:amd64 (1.1.1f-1ubuntu2.21) ...
+Setting up libpcap0.8-dev:amd64 (1.9.1-3) ...
+Setting up unzip (6.0-25ubuntu1.2) ...
+Setting up python3-ply (3.11-3ubuntu0.1) ...
+Setting up libboost1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Setting up libboost-chrono1.71.0:amd64 (1.71.0-6ubuntu6) ...
+Setting up libboost-container1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Setting up libboost-tools-dev (1.71.0.0ubuntu2) ...
+Setting up libobjc4:amd64 (10.5.0-1ubuntu1~20.04) ...
+Setting up libc-ares2:amd64 (1.15.0-1ubuntu0.4) ...
+Setting up python3-thrift (0.13.0-2build2) ...
+Setting up libboost-python1.71.0 (1.71.0-6ubuntu6) ...
+Setting up libpcre2-16-0:amd64 (10.34-7ubuntu0.1) ...
+Setting up libboost-container-dev:amd64 (1.71.0.0ubuntu2) ...
+Setting up libnuma-dev:amd64 (2.0.12-1) ...
+Setting up libboost-numpy1.71.0 (1.71.0-6ubuntu6) ...
+Setting up libprotobuf-dev:amd64 (3.6.1.3-2ubuntu5.2) ...
+Setting up libllvm10:amd64 (1:10.0.0-4ubuntu1) ...
+Setting up libgrpc6:amd64 (1.16.1-1ubuntu5) ...
+Setting up libboost-type-erasure1.71.0:amd64 (1.71.0-6ubuntu6) ...
+Setting up autotools-dev (20180224.1) ...
+Setting up libgmpxx4ldbl:amd64 (2:6.2.0+dfsg-4ubuntu0.1) ...
+Setting up libpfm4:amd64 (4.10.1+git20-g7700f49-2) ...
+Setting up libboost-math1.71.0:amd64 (1.71.0-6ubuntu6) ...
+Setting up protobuf-compiler-grpc (1.16.1-1ubuntu5) ...
+Setting up libboost-atomic1.71.0:amd64 (1.71.0-6ubuntu6) ...
+Setting up libclang1-10 (1:10.0.0-4ubuntu1) ...
+Setting up libsigsegv2:amd64 (2.12-2) ...
+Setting up python3-grpcio (1.16.1-1ubuntu5) ...
+Setting up libssl-dev:amd64 (1.1.1f-1ubuntu2.21) ...
+Setting up libhwloc15:amd64 (2.1.0+dfsg-4) ...
+Setting up libevent-core-2.1-7:amd64 (2.1.11-stable-1) ...
+Setting up gcc-8-base:amd64 (8.4.0-3ubuntu2) ...
+Setting up libelf-dev:amd64 (0.176-1.1ubuntu0.1) ...
+Setting up binfmt-support (2.2.0-2) ...
+Created symlink /etc/systemd/system/multi-user.target.wants/binfmt-support.service → /lib/systemd/system/binfmt-support.service.
+Setting up icu-devtools (66.1-2ubuntu2.1) ...
+Setting up libboost-regex1.71.0:amd64 (1.71.0-6ubuntu6) ...
+Setting up libfl2:amd64 (2.6.4-6.2) ...
+Setting up thrift-compiler (0.13.0-2build2) ...
+Setting up libboost-math1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Setting up libqt5core5a:amd64 (5.12.8+dfsg-0ubuntu2.1) ...
+Setting up libobjc-9-dev:amd64 (9.4.0-1ubuntu1~20.04.2) ...
+Setting up libgfortran5:amd64 (10.5.0-1ubuntu1~20.04) ...
+Setting up libmpx2:amd64 (8.4.0-3ubuntu2) ...
+Setting up libutempter0:amd64 (1.1.6-4) ...
+Setting up python3-scapy (2.4.3-4) ...
+Setting up libboost-timer1.71.0:amd64 (1.71.0-6ubuntu6) ...
+Setting up ocl-icd-libopencl1:amd64 (2.2.11-1ubuntu1) ...
+Setting up libprotoc-dev:amd64 (3.6.1.3-2ubuntu5.2) ...
+Setting up libqt5dbus5:amd64 (5.12.8+dfsg-0ubuntu2.1) ...
+Setting up libboost-test1.71.0:amd64 (1.71.0-6ubuntu6) ...
+Setting up libnanomsg-dev (1.1.5+dfsg-1) ...
+Setting up libnl-3-200:amd64 (3.4.0-1ubuntu0.1) ...
+Setting up libpsm2-2 (11.2.86-1) ...
+Setting up openmpi-common (4.0.3-0ubuntu1) ...
+Setting up libc6-i386 (2.31-0ubuntu9.14) ...
+Setting up libboost-context1.71.0:amd64 (1.71.0-6ubuntu6) ...
+Setting up libboost-serialization1.71.0:amd64 (1.71.0-6ubuntu6) ...
+Setting up libboost-random1.71.0:amd64 (1.71.0-6ubuntu6) ...
+Setting up libboost-system1.71.0:amd64 (1.71.0-6ubuntu6) ...
+Setting up libboost-atomic1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Setting up libboost-dev:amd64 (1.71.0.0ubuntu2) ...
+Setting up libboost-fiber1.71.0:amd64 (1.71.0-6ubuntu6) ...
+Setting up xterm (353-1ubuntu1.20.04.2) ...
+Setting up libpsm-infinipath1 (3.3+20.604758e7-6) ...
+update-alternatives: using /usr/lib/libpsm1/libpsm_infinipath.so.1.16 to provide /usr/lib/x86_64-linux-gnu/libpsm_infinipath.so.1 (libpsm_infinipath.so.1) in auto mode
+Setting up libboost-graph1.71.0:amd64 (1.71.0-6ubuntu6) ...
+Setting up cpp-8 (8.4.0-3ubuntu2) ...
+Setting up libbpf0:amd64 (1:0.5.0-1) ...
+Setting up libgc-dev:amd64 (1:7.6.4-0.4ubuntu1) ...
+Setting up libboost-stacktrace1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Setting up libboost-wave1.71.0:amd64 (1.71.0-6ubuntu6) ...
+Setting up libgrpc++1:amd64 (1.16.1-1ubuntu5) ...
+Setting up libicu-dev:amd64 (66.1-2ubuntu2.1) ...
+Setting up libevent-pthreads-2.1-7:amd64 (2.1.11-stable-1) ...
+Setting up libboost-program-options1.71.0:amd64 (1.71.0-6ubuntu6) ...
+Setting up libboost-program-options1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Setting up libboost-chrono1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Setting up tcpdump (4.9.3-4ubuntu0.3) ...
+Installing new version of config file /etc/apparmor.d/usr.sbin.tcpdump ...
+Setting up libevent-extra-2.1-7:amd64 (2.1.11-stable-1) ...
+Setting up libboost-exception1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Setting up libgmp-dev:amd64 (2:6.2.0+dfsg-4ubuntu0.1) ...
+Setting up libpcap-dev:amd64 (1.9.1-3) ...
+Setting up libbpf-dev:amd64 (1:0.5.0-1) ...
+Setting up libboost-log1.71.0 (1.71.0-6ubuntu6) ...
+Setting up libtool (2.4.6-14) ...
+Setting up libboost-chrono-dev:amd64 (1.71.0.0ubuntu2) ...
+Setting up libboost-numpy1.71-dev (1.71.0-6ubuntu6) ...
+Setting up libboost-math-dev:amd64 (1.71.0.0ubuntu2) ...
+Setting up libboost-python1.71-dev (1.71.0-6ubuntu6) ...
+Setting up libevent-openssl-2.1-7:amd64 (2.1.11-stable-1) ...
+Setting up m4 (1.4.18-4) ...
+Setting up libboost-exception-dev:amd64 (1.71.0.0ubuntu2) ...
+Setting up libhwloc-plugins:amd64 (2.1.0+dfsg-4) ...
+Setting up libclang-cpp10 (1:10.0.0-4ubuntu1) ...
+Setting up llvm-10-runtime (1:10.0.0-4ubuntu1) ...
+Setting up libgrpc-dev:amd64 (1.16.1-1ubuntu5) ...
+Setting up libqt5network5:amd64 (5.12.8+dfsg-0ubuntu2.1) ...
+Setting up libboost-python-dev (1.71.0.0ubuntu2) ...
+Setting up libboost-system1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Setting up libnl-route-3-200:amd64 (3.4.0-1ubuntu0.1) ...
+Setting up libboost-random1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Setting up libboost-coroutine1.71.0:amd64 (1.71.0-6ubuntu6) ...
+Setting up libboost-timer1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Setting up libboost-test1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Setting up libboost-program-options-dev:amd64 (1.71.0.0ubuntu2) ...
+Setting up lib32gcc-s1 (10.5.0-1ubuntu1~20.04) ...
+Setting up lib32stdc++6 (10.5.0-1ubuntu1~20.04) ...
+Setting up libboost-filesystem1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Setting up llvm-runtime (1:10.0-50~exp1) ...
+Setting up libboost-numpy-dev (1.71.0.0ubuntu2) ...
+Setting up libevent-dev (2.1.11-stable-1) ...
+Setting up libboost-regex1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Setting up libboost-serialization1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Setting up libboost-serialization-dev:amd64 (1.71.0.0ubuntu2) ...
+Setting up libgcc-8-dev:amd64 (8.4.0-3ubuntu2) ...
+Setting up autoconf (2.69-11.1) ...
+Setting up libboost-atomic-dev:amd64 (1.71.0.0ubuntu2) ...
+Setting up libboost-date-time1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Setting up libnl-3-dev:amd64 (3.4.0-1ubuntu0.1) ...
+Setting up libboost-stacktrace-dev:amd64 (1.71.0.0ubuntu2) ...
+Setting up libgrpc++-dev:amd64 (1.16.1-1ubuntu5) ...
+Setting up libnl-genl-3-200:amd64 (3.4.0-1ubuntu0.1) ...
+Setting up libthrift-0.13.0 (0.13.0-2build2) ...
+Setting up libthrift-dev (0.13.0-2build2) ...
+Setting up libboost-regex-dev:amd64 (1.71.0.0ubuntu2) ...
+Setting up libboost-timer-dev:amd64 (1.71.0.0ubuntu2) ...
+Setting up libboost-filesystem-dev:amd64 (1.71.0.0ubuntu2) ...
+Setting up libboost-iostreams1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Setting up libboost-graph1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Setting up automake (1:1.16.1-4ubuntu6) ...
+update-alternatives: using /usr/bin/automake-1.16 to provide /usr/bin/automake (automake) in auto mode
+Setting up libgfortran-8-dev:amd64 (8.4.0-3ubuntu2) ...
+Setting up libboost-graph-dev:amd64 (1.71.0.0ubuntu2) ...
+Setting up libibverbs1:amd64 (28.0-1ubuntu1) ...
+Setting up flex (2.6.4-6.2) ...
+Setting up gcc-8 (8.4.0-3ubuntu2) ...
+Setting up libpmix2:amd64 (3.1.5-1) ...
+Setting up ibverbs-providers:amd64 (28.0-1ubuntu1) ...
+Setting up libclang-common-10-dev (1:10.0.0-4ubuntu1) ...
+Setting up gfortran-8 (8.4.0-3ubuntu2) ...
+Setting up libboost-thread1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Setting up llvm-10 (1:10.0.0-4ubuntu1) ...
+Setting up libboost-system-dev:amd64 (1.71.0.0ubuntu2) ...
+Setting up libboost-context1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Setting up libboost-wave1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Setting up libboost-random-dev:amd64 (1.71.0.0ubuntu2) ...
+Setting up libboost-wave-dev:amd64 (1.71.0.0ubuntu2) ...
+Setting up libboost-context-dev:amd64 (1.71.0.0ubuntu2) ...
+Setting up libboost-iostreams-dev:amd64 (1.71.0.0ubuntu2) ...
+Setting up libfl-dev:amd64 (2.6.4-6.2) ...
+Setting up libboost-fiber1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Setting up libboost-test-dev:amd64 (1.71.0.0ubuntu2) ...
+Setting up libnl-route-3-dev:amd64 (3.4.0-1ubuntu0.1) ...
+Setting up libltdl-dev:amd64 (2.4.6-14) ...
+Setting up llvm (1:10.0-50~exp1) ...
+Setting up libboost-date-time-dev:amd64 (1.71.0.0ubuntu2) ...
+Setting up libboost-type-erasure1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Setting up libboost-log1.71-dev (1.71.0-6ubuntu6) ...
+Setting up libboost-coroutine1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Setting up libhwloc-dev:amd64 (2.1.0+dfsg-4) ...
+Setting up libboost-coroutine-dev:amd64 (1.71.0.0ubuntu2) ...
+Setting up clang-10 (1:10.0.0-4ubuntu1) ...
+Setting up libboost-log-dev (1.71.0.0ubuntu2) ...
+Setting up libboost-thread-dev:amd64 (1.71.0.0ubuntu2) ...
+Setting up libboost-fiber-dev:amd64 (1.71.0.0ubuntu2) ...
+Setting up librdmacm1:amd64 (28.0-1ubuntu1) ...
+Setting up libboost-locale1.71-dev:amd64 (1.71.0-6ubuntu6) ...
+Setting up libboost-locale-dev:amd64 (1.71.0.0ubuntu2) ...
+Setting up libibverbs-dev:amd64 (28.0-1ubuntu1) ...
+Setting up libboost-type-erasure-dev:amd64 (1.71.0.0ubuntu2) ...
+Setting up p4lang-pi (0.1.0-15) ...
+Setting up clang (1:10.0-50~exp1) ...
+Setting up libfabric1 (1.6.2-3ubuntu0.1) ...
+Setting up p4lang-bmv2 (1.15.0-7) ...
+Setting up libopenmpi3:amd64 (4.0.3-0ubuntu1) ...
+Setting up libboost-mpi1.71.0 (1.71.0-6ubuntu6) ...
+Setting up libboost-graph-parallel1.71.0 (1.71.0-6ubuntu6) ...
+Setting up openmpi-bin (4.0.3-0ubuntu1) ...
+update-alternatives: using /usr/bin/mpirun.openmpi to provide /usr/bin/mpirun (mpirun) in auto mode
+update-alternatives: using /usr/bin/mpicc.openmpi to provide /usr/bin/mpicc (mpi) in auto mode
+Setting up mpi-default-bin (1.13) ...
+Setting up libboost-graph-parallel1.71-dev (1.71.0-6ubuntu6) ...
+Setting up libopenmpi-dev:amd64 (4.0.3-0ubuntu1) ...
+update-alternatives: using /usr/lib/x86_64-linux-gnu/openmpi/include to provide /usr/include/x86_64-linux-gnu/mpi (mpi-x86_64-linux-gnu) in auto mode
+Setting up libboost-mpi-python1.71.0 (1.71.0-6ubuntu6) ...
+Setting up libboost-graph-parallel-dev (1.71.0.0ubuntu2) ...
+Setting up mpi-default-dev (1.13) ...
+Setting up libboost-mpi1.71-dev (1.71.0-6ubuntu6) ...
+Setting up libboost-mpi-python1.71-dev (1.71.0-6ubuntu6) ...
+Setting up libboost-mpi-python-dev (1.71.0.0ubuntu2) ...
+Setting up libboost-mpi-dev (1.71.0.0ubuntu2) ...
+Setting up libboost-all-dev (1.71.0.0ubuntu2) ...
+Setting up p4lang-p4c (1.2.4.2-2) ...
+Processing triggers for mime-support (3.64ubuntu1) ...
+Processing triggers for hicolor-icon-theme (0.17-2) ...
+Processing triggers for gnome-menus (3.36.0-1ubuntu1) ...
+Processing triggers for libc-bin (2.31-0ubuntu9.14) ...
+Processing triggers for systemd (245.4-4ubuntu3.20) ...
+Processing triggers for man-db (2.9.1-1) ...
+Processing triggers for install-info (6.7.0.dfsg.2-5) ...
+Processing triggers for desktop-file-utils (0.24-1ubuntu3) ...
++ pip -V
+pip 21.2.4 from /opt/anaconda3/lib/python3.9/site-packages/pip (python 3.9)
++ pip2 -V
+./p4-guide/bin/install-p4dev-v5.sh: line 206: pip2: command not found
++ echo 'No such command in PATH: pip2'
+No such command in PATH: pip2
++ pip3 -V
+pip 21.2.4 from /opt/anaconda3/lib/python3.9/site-packages/pip (python 3.9)
++ pip list
+Package                       Version
+----------------------------- --------------------
+aiohttp                       3.8.1
+aiosignal                     1.2.0
+alabaster                     0.7.12
+anaconda-client               1.9.0
+anaconda-navigator            2.1.4
+anaconda-project              0.10.2
+anyio                         3.5.0
+appdirs                       1.4.4
+argon2-cffi                   21.3.0
+argon2-cffi-bindings          21.2.0
+arrow                         1.2.2
+astroid                       2.6.6
+astropy                       5.0.4
+asttokens                     2.0.5
+async-timeout                 4.0.1
+atomicwrites                  1.4.0
+attrs                         21.4.0
+Automat                       20.2.0
+autopep8                      1.6.0
+Babel                         2.9.1
+backcall                      0.2.0
+backports.functools-lru-cache 1.6.4
+backports.tempfile            1.0
+backports.weakref             1.0.post1
+bcrypt                        3.2.0
+beautifulsoup4                4.11.1
+binaryornot                   0.4.4
+bitarray                      2.4.1
+bkcharts                      0.2
+black                         19.10b0
+bleach                        4.1.0
+bokeh                         2.4.2
+boto3                         1.21.32
+botocore                      1.24.32
+Bottleneck                    1.3.4
+brotlipy                      0.7.0
+cachetools                    4.2.2
+certifi                       2021.10.8
+cffi                          1.15.0
+chardet                       4.0.0
+charset-normalizer            2.0.4
+click                         8.0.4
+cloudpickle                   2.0.0
+clyent                        1.2.2
+colorama                      0.4.4
+colorcet                      2.0.6
+conda                         4.12.0
+conda-build                   3.21.8
+conda-content-trust           0+unknown
+conda-pack                    0.6.0
+conda-package-handling        1.8.1
+conda-repo-cli                1.0.4
+conda-token                   0.3.0
+conda-verify                  3.4.2
+constantly                    15.1.0
+cookiecutter                  1.7.3
+cryptography                  3.4.8
+cssselect                     1.1.0
+cycler                        0.11.0
+Cython                        0.29.28
+cytoolz                       0.11.0
+daal4py                       2021.5.0
+dask                          2022.2.1
+datashader                    0.13.0
+datashape                     0.5.4
+debugpy                       1.5.1
+decorator                     5.1.1
+defusedxml                    0.7.1
+diff-match-patch              20200713
+distributed                   2022.2.1
+docutils                      0.17.1
+entrypoints                   0.4
+et-xmlfile                    1.1.0
+executing                     0.8.3
+fastjsonschema                2.15.1
+filelock                      3.6.0
+flake8                        3.9.2
+Flask                         1.1.2
+fonttools                     4.25.0
+frozenlist                    1.2.0
+fsspec                        2022.2.0
+future                        0.18.2
+gensim                        4.1.2
+glob2                         0.7
+gmpy2                         2.1.2
+google-api-core               1.25.1
+google-auth                   1.33.0
+google-cloud-core             1.7.1
+google-cloud-storage          1.31.0
+google-crc32c                 1.1.2
+google-resumable-media        1.3.1
+googleapis-common-protos      1.53.0
+greenlet                      1.1.1
+grpcio                        1.42.0
+h5py                          3.6.0
+HeapDict                      1.0.1
+holoviews                     1.14.8
+hvplot                        0.7.3
+hyperlink                     21.0.0
+idna                          3.3
+imagecodecs                   2021.8.26
+imageio                       2.9.0
+imagesize                     1.3.0
+importlib-metadata            4.11.3
+incremental                   21.3.0
+inflection                    0.5.1
+iniconfig                     1.1.1
+intake                        0.6.5
+intervaltree                  3.1.0
+ipykernel                     6.9.1
+ipython                       8.2.0
+ipython-genutils              0.2.0
+ipywidgets                    7.6.5
+isort                         5.9.3
+itemadapter                   0.3.0
+itemloaders                   1.0.4
+itsdangerous                  2.0.1
+jdcal                         1.4.1
+jedi                          0.18.1
+jeepney                       0.7.1
+Jinja2                        2.11.3
+jinja2-time                   0.2.0
+jmespath                      0.10.0
+joblib                        1.1.0
+json5                         0.9.6
+jsonschema                    4.4.0
+jupyter                       1.0.0
+jupyter-client                6.1.12
+jupyter-console               6.4.0
+jupyter-core                  4.9.2
+jupyter-server                1.13.5
+jupyterlab                    3.3.2
+jupyterlab-pygments           0.1.2
+jupyterlab-server             2.10.3
+jupyterlab-widgets            1.0.0
+keyring                       23.4.0
+kiwisolver                    1.3.2
+lazy-object-proxy             1.6.0
+libarchive-c                  2.9
+llvmlite                      0.38.0
+locket                        0.2.1
+lxml                          4.8.0
+Markdown                      3.3.4
+MarkupSafe                    2.0.1
+matplotlib                    3.5.1
+matplotlib-inline             0.1.2
+mccabe                        0.6.1
+mistune                       0.8.4
+mkl-fft                       1.3.1
+mkl-random                    1.2.2
+mkl-service                   2.4.0
+mock                          4.0.3
+mpmath                        1.2.1
+msgpack                       1.0.2
+multidict                     5.2.0
+multipledispatch              0.6.0
+munkres                       1.1.4
+mypy-extensions               0.4.3
+navigator-updater             0.2.1
+nbclassic                     0.3.5
+nbclient                      0.5.13
+nbconvert                     6.4.4
+nbformat                      5.3.0
+nest-asyncio                  1.5.5
+networkx                      2.7.1
+nltk                          3.7
+nose                          1.3.7
+notebook                      6.4.8
+numba                         0.55.1
+numexpr                       2.8.1
+numpy                         1.21.5
+numpydoc                      1.2
+olefile                       0.46
+openpyxl                      3.0.9
+packaging                     21.3
+pandas                        1.4.2
+pandocfilters                 1.5.0
+panel                         0.13.0
+param                         1.12.0
+parsel                        1.6.0
+parso                         0.8.3
+partd                         1.2.0
+pathspec                      0.7.0
+patsy                         0.5.2
+pep8                          1.7.1
+pexpect                       4.8.0
+pickleshare                   0.7.5
+Pillow                        9.0.1
+pip                           21.2.4
+pkginfo                       1.8.2
+plotly                        5.6.0
+pluggy                        1.0.0
+poyo                          0.5.0
+prometheus-client             0.13.1
+prompt-toolkit                3.0.20
+Protego                       0.1.16
+protobuf                      3.19.1
+psutil                        5.8.0
+ptyprocess                    0.7.0
+pure-eval                     0.2.2
+py                            1.11.0
+pyasn1                        0.4.8
+pyasn1-modules                0.2.8
+pycodestyle                   2.7.0
+pycosat                       0.6.3
+pycparser                     2.21
+pyct                          0.4.6
+pycurl                        7.44.1
+PyDispatcher                  2.0.5
+pydocstyle                    6.1.1
+pyerfa                        2.0.0
+pyflakes                      2.3.1
+Pygments                      2.11.2
+PyHamcrest                    2.0.2
+PyJWT                         2.1.0
+pylint                        2.9.6
+pyls-spyder                   0.4.0
+pyodbc                        4.0.32
+pyOpenSSL                     21.0.0
+pyparsing                     3.0.4
+pyrsistent                    0.18.0
+PySocks                       1.7.1
+pytest                        7.1.1
+python-dateutil               2.8.2
+python-lsp-black              1.0.0
+python-lsp-jsonrpc            1.0.0
+python-lsp-server             1.2.4
+python-slugify                5.0.2
+python-snappy                 0.6.0
+pytz                          2021.3
+pyviz-comms                   2.0.2
+PyWavelets                    1.3.0
+pyxdg                         0.27
+PyYAML                        6.0
+pyzmq                         22.3.0
+QDarkStyle                    3.0.2
+qstylizer                     0.1.10
+QtAwesome                     1.0.3
+qtconsole                     5.3.0
+QtPy                          2.0.1
+queuelib                      1.5.0
+regex                         2022.3.15
+requests                      2.27.1
+requests-file                 1.5.1
+rope                          0.22.0
+rsa                           4.7.2
+Rtree                         0.9.7
+ruamel-yaml-conda             0.15.100
+s3transfer                    0.5.0
+scikit-image                  0.19.2
+scikit-learn                  1.0.2
+scikit-learn-intelex          2021.20220215.212715
+scipy                         1.7.3
+Scrapy                        2.6.1
+seaborn                       0.11.2
+SecretStorage                 3.3.1
+Send2Trash                    1.8.0
+service-identity              18.1.0
+setuptools                    61.2.0
+sip                           4.19.13
+six                           1.16.0
+smart-open                    5.1.0
+sniffio                       1.2.0
+snowballstemmer               2.2.0
+sortedcollections             2.1.0
+sortedcontainers              2.4.0
+soupsieve                     2.3.1
+Sphinx                        4.4.0
+sphinxcontrib-applehelp       1.0.2
+sphinxcontrib-devhelp         1.0.2
+sphinxcontrib-htmlhelp        2.0.0
+sphinxcontrib-jsmath          1.0.1
+sphinxcontrib-qthelp          1.0.3
+sphinxcontrib-serializinghtml 1.1.5
+spyder                        5.1.5
+spyder-kernels                2.1.3
+SQLAlchemy                    1.4.32
+stack-data                    0.2.0
+statsmodels                   0.13.2
+sympy                         1.10.1
+tables                        3.6.1
+tabulate                      0.8.9
+TBB                           0.2
+tblib                         1.7.0
+tenacity                      8.0.1
+terminado                     0.13.1
+testpath                      0.5.0
+text-unidecode                1.3
+textdistance                  4.2.1
+threadpoolctl                 2.2.0
+three-merge                   0.1.1
+tifffile                      2021.7.2
+tinycss                       0.4
+tldextract                    3.2.0
+toml                          0.10.2
+tomli                         1.2.2
+toolz                         0.11.2
+tornado                       6.1
+tqdm                          4.64.0
+traitlets                     5.1.1
+Twisted                       22.2.0
+typed-ast                     1.4.3
+typing_extensions             4.1.1
+ujson                         5.1.0
+Unidecode                     1.2.0
+urllib3                       1.26.9
+w3lib                         1.21.0
+watchdog                      2.1.6
+wcwidth                       0.2.5
+webencodings                  0.5.1
+websocket-client              0.58.0
+Werkzeug                      2.0.3
+wheel                         0.37.1
+widgetsnbextension            3.5.2
+wrapt                         1.12.1
+wurlitzer                     3.0.2
+xarray                        0.20.1
+xlrd                          2.0.1
+XlsxWriter                    3.0.3
+yapf                          0.31.0
+yarl                          1.6.3
+zict                          2.0.0
+zipp                          3.7.0
+zope.interface                5.4.0
++ pip3 list
+Package                       Version
+----------------------------- --------------------
+aiohttp                       3.8.1
+aiosignal                     1.2.0
+alabaster                     0.7.12
+anaconda-client               1.9.0
+anaconda-navigator            2.1.4
+anaconda-project              0.10.2
+anyio                         3.5.0
+appdirs                       1.4.4
+argon2-cffi                   21.3.0
+argon2-cffi-bindings          21.2.0
+arrow                         1.2.2
+astroid                       2.6.6
+astropy                       5.0.4
+asttokens                     2.0.5
+async-timeout                 4.0.1
+atomicwrites                  1.4.0
+attrs                         21.4.0
+Automat                       20.2.0
+autopep8                      1.6.0
+Babel                         2.9.1
+backcall                      0.2.0
+backports.functools-lru-cache 1.6.4
+backports.tempfile            1.0
+backports.weakref             1.0.post1
+bcrypt                        3.2.0
+beautifulsoup4                4.11.1
+binaryornot                   0.4.4
+bitarray                      2.4.1
+bkcharts                      0.2
+black                         19.10b0
+bleach                        4.1.0
+bokeh                         2.4.2
+boto3                         1.21.32
+botocore                      1.24.32
+Bottleneck                    1.3.4
+brotlipy                      0.7.0
+cachetools                    4.2.2
+certifi                       2021.10.8
+cffi                          1.15.0
+chardet                       4.0.0
+charset-normalizer            2.0.4
+click                         8.0.4
+cloudpickle                   2.0.0
+clyent                        1.2.2
+colorama                      0.4.4
+colorcet                      2.0.6
+conda                         4.12.0
+conda-build                   3.21.8
+conda-content-trust           0+unknown
+conda-pack                    0.6.0
+conda-package-handling        1.8.1
+conda-repo-cli                1.0.4
+conda-token                   0.3.0
+conda-verify                  3.4.2
+constantly                    15.1.0
+cookiecutter                  1.7.3
+cryptography                  3.4.8
+cssselect                     1.1.0
+cycler                        0.11.0
+Cython                        0.29.28
+cytoolz                       0.11.0
+daal4py                       2021.5.0
+dask                          2022.2.1
+datashader                    0.13.0
+datashape                     0.5.4
+debugpy                       1.5.1
+decorator                     5.1.1
+defusedxml                    0.7.1
+diff-match-patch              20200713
+distributed                   2022.2.1
+docutils                      0.17.1
+entrypoints                   0.4
+et-xmlfile                    1.1.0
+executing                     0.8.3
+fastjsonschema                2.15.1
+filelock                      3.6.0
+flake8                        3.9.2
+Flask                         1.1.2
+fonttools                     4.25.0
+frozenlist                    1.2.0
+fsspec                        2022.2.0
+future                        0.18.2
+gensim                        4.1.2
+glob2                         0.7
+gmpy2                         2.1.2
+google-api-core               1.25.1
+google-auth                   1.33.0
+google-cloud-core             1.7.1
+google-cloud-storage          1.31.0
+google-crc32c                 1.1.2
+google-resumable-media        1.3.1
+googleapis-common-protos      1.53.0
+greenlet                      1.1.1
+grpcio                        1.42.0
+h5py                          3.6.0
+HeapDict                      1.0.1
+holoviews                     1.14.8
+hvplot                        0.7.3
+hyperlink                     21.0.0
+idna                          3.3
+imagecodecs                   2021.8.26
+imageio                       2.9.0
+imagesize                     1.3.0
+importlib-metadata            4.11.3
+incremental                   21.3.0
+inflection                    0.5.1
+iniconfig                     1.1.1
+intake                        0.6.5
+intervaltree                  3.1.0
+ipykernel                     6.9.1
+ipython                       8.2.0
+ipython-genutils              0.2.0
+ipywidgets                    7.6.5
+isort                         5.9.3
+itemadapter                   0.3.0
+itemloaders                   1.0.4
+itsdangerous                  2.0.1
+jdcal                         1.4.1
+jedi                          0.18.1
+jeepney                       0.7.1
+Jinja2                        2.11.3
+jinja2-time                   0.2.0
+jmespath                      0.10.0
+joblib                        1.1.0
+json5                         0.9.6
+jsonschema                    4.4.0
+jupyter                       1.0.0
+jupyter-client                6.1.12
+jupyter-console               6.4.0
+jupyter-core                  4.9.2
+jupyter-server                1.13.5
+jupyterlab                    3.3.2
+jupyterlab-pygments           0.1.2
+jupyterlab-server             2.10.3
+jupyterlab-widgets            1.0.0
+keyring                       23.4.0
+kiwisolver                    1.3.2
+lazy-object-proxy             1.6.0
+libarchive-c                  2.9
+llvmlite                      0.38.0
+locket                        0.2.1
+lxml                          4.8.0
+Markdown                      3.3.4
+MarkupSafe                    2.0.1
+matplotlib                    3.5.1
+matplotlib-inline             0.1.2
+mccabe                        0.6.1
+mistune                       0.8.4
+mkl-fft                       1.3.1
+mkl-random                    1.2.2
+mkl-service                   2.4.0
+mock                          4.0.3
+mpmath                        1.2.1
+msgpack                       1.0.2
+multidict                     5.2.0
+multipledispatch              0.6.0
+munkres                       1.1.4
+mypy-extensions               0.4.3
+navigator-updater             0.2.1
+nbclassic                     0.3.5
+nbclient                      0.5.13
+nbconvert                     6.4.4
+nbformat                      5.3.0
+nest-asyncio                  1.5.5
+networkx                      2.7.1
+nltk                          3.7
+nose                          1.3.7
+notebook                      6.4.8
+numba                         0.55.1
+numexpr                       2.8.1
+numpy                         1.21.5
+numpydoc                      1.2
+olefile                       0.46
+openpyxl                      3.0.9
+packaging                     21.3
+pandas                        1.4.2
+pandocfilters                 1.5.0
+panel                         0.13.0
+param                         1.12.0
+parsel                        1.6.0
+parso                         0.8.3
+partd                         1.2.0
+pathspec                      0.7.0
+patsy                         0.5.2
+pep8                          1.7.1
+pexpect                       4.8.0
+pickleshare                   0.7.5
+Pillow                        9.0.1
+pip                           21.2.4
+pkginfo                       1.8.2
+plotly                        5.6.0
+pluggy                        1.0.0
+poyo                          0.5.0
+prometheus-client             0.13.1
+prompt-toolkit                3.0.20
+Protego                       0.1.16
+protobuf                      3.19.1
+psutil                        5.8.0
+ptyprocess                    0.7.0
+pure-eval                     0.2.2
+py                            1.11.0
+pyasn1                        0.4.8
+pyasn1-modules                0.2.8
+pycodestyle                   2.7.0
+pycosat                       0.6.3
+pycparser                     2.21
+pyct                          0.4.6
+pycurl                        7.44.1
+PyDispatcher                  2.0.5
+pydocstyle                    6.1.1
+pyerfa                        2.0.0
+pyflakes                      2.3.1
+Pygments                      2.11.2
+PyHamcrest                    2.0.2
+PyJWT                         2.1.0
+pylint                        2.9.6
+pyls-spyder                   0.4.0
+pyodbc                        4.0.32
+pyOpenSSL                     21.0.0
+pyparsing                     3.0.4
+pyrsistent                    0.18.0
+PySocks                       1.7.1
+pytest                        7.1.1
+python-dateutil               2.8.2
+python-lsp-black              1.0.0
+python-lsp-jsonrpc            1.0.0
+python-lsp-server             1.2.4
+python-slugify                5.0.2
+python-snappy                 0.6.0
+pytz                          2021.3
+pyviz-comms                   2.0.2
+PyWavelets                    1.3.0
+pyxdg                         0.27
+PyYAML                        6.0
+pyzmq                         22.3.0
+QDarkStyle                    3.0.2
+qstylizer                     0.1.10
+QtAwesome                     1.0.3
+qtconsole                     5.3.0
+QtPy                          2.0.1
+queuelib                      1.5.0
+regex                         2022.3.15
+requests                      2.27.1
+requests-file                 1.5.1
+rope                          0.22.0
+rsa                           4.7.2
+Rtree                         0.9.7
+ruamel-yaml-conda             0.15.100
+s3transfer                    0.5.0
+scikit-image                  0.19.2
+scikit-learn                  1.0.2
+scikit-learn-intelex          2021.20220215.212715
+scipy                         1.7.3
+Scrapy                        2.6.1
+seaborn                       0.11.2
+SecretStorage                 3.3.1
+Send2Trash                    1.8.0
+service-identity              18.1.0
+setuptools                    61.2.0
+sip                           4.19.13
+six                           1.16.0
+smart-open                    5.1.0
+sniffio                       1.2.0
+snowballstemmer               2.2.0
+sortedcollections             2.1.0
+sortedcontainers              2.4.0
+soupsieve                     2.3.1
+Sphinx                        4.4.0
+sphinxcontrib-applehelp       1.0.2
+sphinxcontrib-devhelp         1.0.2
+sphinxcontrib-htmlhelp        2.0.0
+sphinxcontrib-jsmath          1.0.1
+sphinxcontrib-qthelp          1.0.3
+sphinxcontrib-serializinghtml 1.1.5
+spyder                        5.1.5
+spyder-kernels                2.1.3
+SQLAlchemy                    1.4.32
+stack-data                    0.2.0
+statsmodels                   0.13.2
+sympy                         1.10.1
+tables                        3.6.1
+tabulate                      0.8.9
+TBB                           0.2
+tblib                         1.7.0
+tenacity                      8.0.1
+terminado                     0.13.1
+testpath                      0.5.0
+text-unidecode                1.3
+textdistance                  4.2.1
+threadpoolctl                 2.2.0
+three-merge                   0.1.1
+tifffile                      2021.7.2
+tinycss                       0.4
+tldextract                    3.2.0
+toml                          0.10.2
+tomli                         1.2.2
+toolz                         0.11.2
+tornado                       6.1
+tqdm                          4.64.0
+traitlets                     5.1.1
+Twisted                       22.2.0
+typed-ast                     1.4.3
+typing_extensions             4.1.1
+ujson                         5.1.0
+Unidecode                     1.2.0
+urllib3                       1.26.9
+w3lib                         1.21.0
+watchdog                      2.1.6
+wcwidth                       0.2.5
+webencodings                  0.5.1
+websocket-client              0.58.0
+Werkzeug                      2.0.3
+wheel                         0.37.1
+widgetsnbextension            3.5.2
+wrapt                         1.12.1
+wurlitzer                     3.0.2
+xarray                        0.20.1
+xlrd                          2.0.1
+XlsxWriter                    3.0.3
+yapf                          0.31.0
+yarl                          1.6.3
+zict                          2.0.0
+zipp                          3.7.0
+zope.interface                5.4.0
++ cd /home/guang/zsy/p4
++ find /usr/lib /usr/local /root/.local
++ sort
++ sudo pip3 install -U scapy ptf psutil grpcio
+Collecting scapy
+  Downloading scapy-2.5.0.tar.gz (1.3 MB)
+Collecting ptf
+  Downloading ptf-0.10.0-py3-none-any.whl (59 kB)
+Collecting psutil
+  Downloading psutil-5.9.8-cp36-abi3-manylinux_2_12_x86_64.manylinux2010_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl (288 kB)
+Collecting grpcio
+  Downloading grpcio-1.62.0-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (5.6 MB)
+Building wheels for collected packages: scapy
+  Building wheel for scapy (setup.py): started
+  Building wheel for scapy (setup.py): finished with status 'done'
+  Created wheel for scapy: filename=scapy-2.5.0-py2.py3-none-any.whl size=1444336 sha256=f36c1b9255b08a11175b6366726e42b6aab2e1560a1ae1a05b2ce0f326a8895f
+  Stored in directory: /root/.cache/pip/wheels/98/ea/08/164e840ab2c83b892bf8b193ce9d92d029dc3e5f2b75319953
+Successfully built scapy
+Installing collected packages: scapy, ptf, psutil, grpcio
+  Attempting uninstall: scapy
+    Found existing installation: scapy 2.4.3
+    Not uninstalling scapy at /usr/lib/python3/dist-packages, outside environment /usr
+    Can't uninstall 'scapy'. No files were found to uninstall.
+  Attempting uninstall: grpcio
+    Found existing installation: grpcio 1.16.1
+    Not uninstalling grpcio at /usr/lib/python3/dist-packages, outside environment /usr
+    Can't uninstall 'grpcio'. No files were found to uninstall.
+Successfully installed grpcio-1.62.0 psutil-5.9.8 ptf-0.10.0 scapy-2.5.0
++ set +x
+------------------------------------------------------------
+Installing Mininet - not necessary to run P4 programs, but useful if
+you want to run tutorials from https://github.com/p4lang/tutorials
+repository.
+start install mininet:
++ date
+2024年 02月 27日 星期二 14:41:42 CST
++ MININET_COMMIT=5b1b376336e1c6330308e64ba41baac6976b6874
++ git clone https://github.com/mininet/mininet mininet
+Cloning into 'mininet'...
++ cd mininet
++ git checkout 5b1b376336e1c6330308e64ba41baac6976b6874
+Note: switching to '5b1b376336e1c6330308e64ba41baac6976b6874'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by switching back to a branch.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -c with the switch command. Example:
+
+  git switch -c <new-branch-name>
+
+Or undo this operation with:
+
+  git switch -
+
+Turn off this advice by setting config variable advice.detachedHead to false
+
+HEAD is now at 5b1b376 fix typo in miniedit.py (#1187)
++ PATCH_DIR=/home/guang/zsy/p4/p4-guide/bin/patches
++ patch -p1
+patching file util/install.sh
++ cd ..
++ sudo ./mininet/util/install.sh -nw
++ set -o nounset
++++ dirname ./mininet/util/install.sh
+++ cd -P ./mininet/util/../..
+++ pwd -P
++ MININET_DIR=/home/guang/zsy/p4
+++ pwd -P
++ BUILD_DIR=/home/guang/zsy/p4
++ case $BUILD_DIR in
++ BUILD_DIR=/home/guang/zsy/p4
++ KERNEL_LOC=http://www.openflow.org/downloads/mininet
++ DIST=Unknown
++ RELEASE=Unknown
++ CODENAME=Unknown
+++ uname -m
++ ARCH=x86_64
++ '[' x86_64 = x86_64 ']'
++ ARCH=amd64
++ '[' amd64 = i686 ']'
++ test -e /etc/debian_version
++ DIST=Debian
++ grep Ubuntu /etc/lsb-release
++ DIST=Ubuntu
++ '[' Ubuntu = Ubuntu ']'
++ install='sudo DEBIAN_FRONTEND=noninteractive apt-get -y -q install'
++ remove='sudo DEBIAN_FRONTEND=noninteractive apt-get -y -q remove'
++ pkginst='sudo dpkg -i'
++ update='sudo apt-get'
++ which lsb_release
++ test -e /etc/fedora-release
++ test -e /etc/redhat-release
++ '[' Ubuntu = Fedora -o Ubuntu = RedHatEnterpriseServer ']'
++ test -e /etc/SuSE-release
++ '[' Ubuntu = 'SUSE Linux' ']'
++ which lsb_release
+++ lsb_release -is
++ DIST=Ubuntu
+++ lsb_release -rs
++ RELEASE=20.04
+++ lsb_release -cs
++ CODENAME=focal
++ echo 'Detected Linux distribution: Ubuntu 20.04 focal amd64'
+Detected Linux distribution: Ubuntu 20.04 focal amd64
+++ uname -r
++ KERNEL_NAME=5.15.0-92-generic
++ KERNEL_HEADERS=kernel-headers-5.15.0-92-generic
++ '[' Ubuntu = Raspbian ']'
++ DISTS='Ubuntu|Debian|Fedora|RedHatEnterpriseServer|SUSE LINUX'
++ echo Ubuntu
++ egrep 'Ubuntu|Debian|Fedora|RedHatEnterpriseServer|SUSE LINUX'
+++ echo Ubuntu
+++ tr '[A-Z]' '[a-z]'
++ DIST_LC=ubuntu
++ PYTHON=python
++ PRINTVERSION='import sys; print(sys.version_info)'
++ PYTHON_VERSION=unknown
++ for python in $PYTHON python2 python3
++ python -c 'import sys; print(sys.version_info)'
++ grep major=2
+sys.version_info(major=2, minor=7, micro=18, releaselevel='final', serial=0)
++ PYTHON=python
++ PYTHON_VERSION=2
++ PYPKG=python
++ break
++ '[' 2 == unknown ']'
++ echo 'Detected Python (python) version 2'
+Detected Python (python) version 2
++ KERNEL_IMAGE_OLD=linux-image-2.6.26-33-generic
++ DRIVERS_DIR=/lib/modules/5.15.0-92-generic/kernel/drivers/net
++ OVS_RELEASE=1.4.0
++ OVS_PACKAGE_LOC=https://github.com/downloads/mininet/mininet
++ OVS_BUILDSUFFIX=-ignore
++ OVS_PACKAGE_NAME=ovs-1.4.0-core-ubuntu-20.04-amd64-ignore.tar
++ OVS_TAG=v1.4.0
++ OF13_SWITCH_REV=
++ OF_VERSION=1.0
++ '[' 1 -eq 0 ']'
++ getopts abcdefhikmnprs:tvV:wxy03 OPTION
++ case $OPTION in
++ mn_deps
++ echo 'Installing Mininet dependencies'
+Installing Mininet dependencies
++ '[' Ubuntu = Fedora -o Ubuntu = RedHatEnterpriseServer ']'
++ '[' Ubuntu = 'SUSE LINUX' ']'
++ pf=pyflakes
++ pep8=pep8
++ pylint=pylint
+++ expr 20.04 '>=' 20.04
++ '[' Ubuntu = Ubuntu -a 1 = 1 ']'
++ pf=pyflakes3
+++ expr 20.04 '>=' 11
++ '[' Ubuntu = Debian -a 1 = 1 ']'
+++ expr 20.04 '<=' 20.04
++ '[' Ubuntu = Ubuntu -a 1 = 1 ']'
++ pylint=pylint3
++ sudo DEBIAN_FRONTEND=noninteractive apt-get -y -q install gcc make socat psmisc xterm ssh iperf telnet ethtool help2man pylint3 net-tools python-tk
+Reading package lists...
+Building dependency tree...
+Reading state information...
+gcc is already the newest version (4:9.3.0-1ubuntu2).
+gcc set to manually installed.
+make is already the newest version (4.2.1-1.2).
+make set to manually installed.
+net-tools is already the newest version (1.60+git20180626.aebd88e-1ubuntu1).
+psmisc is already the newest version (23.3-1).
+psmisc set to manually installed.
+telnet is already the newest version (0.17-41.2build1).
+telnet set to manually installed.
+xterm is already the newest version (353-1ubuntu1.20.04.2).
+The following additional packages will be installed:
+  blt libtcl8.6 libtk8.6 python3-astroid python3-isort
+  python3-lazy-object-proxy python3-logilab-common python3-mccabe python3-tk
+  python3-wrapt tk8.6-blt2.5
+Suggested packages:
+  blt-demo tcl8.6 tk8.6 pylint-doc tix python-tk-dbg python3-tk-dbg
+The following NEW packages will be installed:
+  blt ethtool help2man iperf libtcl8.6 libtk8.6 pylint python-tk
+  python3-astroid python3-isort python3-lazy-object-proxy
+  python3-logilab-common python3-mccabe python3-tk python3-wrapt socat ssh
+  tk8.6-blt2.5
+0 upgraded, 18 newly installed, 0 to remove and 106 not upgraded.
+Need to get 3,585 kB of archives.
+After this operation, 15.5 MB of additional disk space will be used.
+Ign:1 http://mirrors.aliyun.com/ubuntu focal-updates/main amd64 ssh all 1:8.2p1-4ubuntu0.11
+Get:2 http://mirrors.aliyun.com/ubuntu focal/main amd64 libtcl8.6 amd64 8.6.10+dfsg-1 [902 kB]
+Get:3 http://mirrors.aliyun.com/ubuntu focal/main amd64 libtk8.6 amd64 8.6.10-1 [714 kB]
+Get:4 http://mirrors.aliyun.com/ubuntu focal/main amd64 tk8.6-blt2.5 amd64 2.5.3+dfsg-4 [572 kB]
+Get:5 http://mirrors.aliyun.com/ubuntu focal/main amd64 blt amd64 2.5.3+dfsg-4 [4,944 B]
+Get:6 http://mirrors.aliyun.com/ubuntu focal/main amd64 ethtool amd64 1:5.4-1 [134 kB]
+Get:7 http://mirrors.aliyun.com/ubuntu focal/universe amd64 help2man amd64 1.47.13 [173 kB]
+Get:8 http://mirrors.aliyun.com/ubuntu focal/universe amd64 iperf amd64 2.0.13+dfsg1-1build1 [76.5 kB]
+Get:9 http://mirrors.aliyun.com/ubuntu focal/main amd64 python3-lazy-object-proxy amd64 1.4.3-1build1 [17.9 kB]
+Get:10 http://mirrors.aliyun.com/ubuntu focal/main amd64 python3-wrapt amd64 1.11.2-2build1 [30.6 kB]
+Get:11 http://mirrors.aliyun.com/ubuntu focal/main amd64 python3-astroid all 2.3.3-1 [127 kB]
+Get:12 http://mirrors.aliyun.com/ubuntu focal/universe amd64 python3-isort all 4.3.4+ds1-2 [30.7 kB]
+Get:13 http://mirrors.aliyun.com/ubuntu focal/main amd64 python3-logilab-common all 1.4.3-2 [119 kB]
+Get:14 http://mirrors.aliyun.com/ubuntu focal/universe amd64 python3-mccabe all 0.6.1-3 [8,488 B]
+Get:15 http://mirrors.aliyun.com/ubuntu focal/universe amd64 pylint all 2.4.4-2 [218 kB]
+Get:16 http://mirrors.aliyun.com/ubuntu focal/universe amd64 python-tk amd64 2.7.18-1 [25.3 kB]
+Get:17 http://mirrors.aliyun.com/ubuntu focal-updates/main amd64 python3-tk amd64 3.8.10-0ubuntu1~20.04 [104 kB]
+Get:18 http://mirrors.aliyun.com/ubuntu focal/main amd64 socat amd64 1.7.3.3-2 [323 kB]
+Get:1 http://mirrors.aliyun.com/ubuntu focal-updates/main amd64 ssh all 1:8.2p1-4ubuntu0.11 [5,084 B]
+Fetched 3,585 kB in 31s (115 kB/s)
+Selecting previously unselected package ssh.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 246609 files and directories currently installed.)
+Preparing to unpack .../00-ssh_1%3a8.2p1-4ubuntu0.11_all.deb ...
+Unpacking ssh (1:8.2p1-4ubuntu0.11) ...
+Selecting previously unselected package libtcl8.6:amd64.
+Preparing to unpack .../01-libtcl8.6_8.6.10+dfsg-1_amd64.deb ...
+Unpacking libtcl8.6:amd64 (8.6.10+dfsg-1) ...
+Selecting previously unselected package libtk8.6:amd64.
+Preparing to unpack .../02-libtk8.6_8.6.10-1_amd64.deb ...
+Unpacking libtk8.6:amd64 (8.6.10-1) ...
+Selecting previously unselected package tk8.6-blt2.5.
+Preparing to unpack .../03-tk8.6-blt2.5_2.5.3+dfsg-4_amd64.deb ...
+Unpacking tk8.6-blt2.5 (2.5.3+dfsg-4) ...
+Selecting previously unselected package blt.
+Preparing to unpack .../04-blt_2.5.3+dfsg-4_amd64.deb ...
+Unpacking blt (2.5.3+dfsg-4) ...
+Selecting previously unselected package ethtool.
+Preparing to unpack .../05-ethtool_1%3a5.4-1_amd64.deb ...
+Unpacking ethtool (1:5.4-1) ...
+Selecting previously unselected package help2man.
+Preparing to unpack .../06-help2man_1.47.13_amd64.deb ...
+Unpacking help2man (1.47.13) ...
+Selecting previously unselected package iperf.
+Preparing to unpack .../07-iperf_2.0.13+dfsg1-1build1_amd64.deb ...
+Unpacking iperf (2.0.13+dfsg1-1build1) ...
+Selecting previously unselected package python3-lazy-object-proxy.
+Preparing to unpack .../08-python3-lazy-object-proxy_1.4.3-1build1_amd64.deb ...
+Unpacking python3-lazy-object-proxy (1.4.3-1build1) ...
+Selecting previously unselected package python3-wrapt.
+Preparing to unpack .../09-python3-wrapt_1.11.2-2build1_amd64.deb ...
+Unpacking python3-wrapt (1.11.2-2build1) ...
+Selecting previously unselected package python3-astroid.
+Preparing to unpack .../10-python3-astroid_2.3.3-1_all.deb ...
+Unpacking python3-astroid (2.3.3-1) ...
+Selecting previously unselected package python3-isort.
+Preparing to unpack .../11-python3-isort_4.3.4+ds1-2_all.deb ...
+Unpacking python3-isort (4.3.4+ds1-2) ...
+Selecting previously unselected package python3-logilab-common.
+Preparing to unpack .../12-python3-logilab-common_1.4.3-2_all.deb ...
+Unpacking python3-logilab-common (1.4.3-2) ...
+Selecting previously unselected package python3-mccabe.
+Preparing to unpack .../13-python3-mccabe_0.6.1-3_all.deb ...
+Unpacking python3-mccabe (0.6.1-3) ...
+Selecting previously unselected package pylint.
+Preparing to unpack .../14-pylint_2.4.4-2_all.deb ...
+Unpacking pylint (2.4.4-2) ...
+Selecting previously unselected package python-tk.
+Preparing to unpack .../15-python-tk_2.7.18-1_amd64.deb ...
+Unpacking python-tk (2.7.18-1) ...
+Selecting previously unselected package python3-tk:amd64.
+Preparing to unpack .../16-python3-tk_3.8.10-0ubuntu1~20.04_amd64.deb ...
+Unpacking python3-tk:amd64 (3.8.10-0ubuntu1~20.04) ...
+Selecting previously unselected package socat.
+Preparing to unpack .../17-socat_1.7.3.3-2_amd64.deb ...
+Unpacking socat (1.7.3.3-2) ...
+Setting up ssh (1:8.2p1-4ubuntu0.11) ...
+Setting up python3-logilab-common (1.4.3-2) ...
+Setting up help2man (1.47.13) ...
+Setting up iperf (2.0.13+dfsg1-1build1) ...
+Setting up socat (1.7.3.3-2) ...
+Setting up python3-wrapt (1.11.2-2build1) ...
+Setting up libtcl8.6:amd64 (8.6.10+dfsg-1) ...
+Setting up python3-isort (4.3.4+ds1-2) ...
+Setting up python3-mccabe (0.6.1-3) ...
+Setting up python3-lazy-object-proxy (1.4.3-1build1) ...
+Setting up ethtool (1:5.4-1) ...
+Setting up libtk8.6:amd64 (8.6.10-1) ...
+Setting up python3-astroid (2.3.3-1) ...
+Setting up pylint (2.4.4-2) ...
+Setting up tk8.6-blt2.5 (2.5.3+dfsg-4) ...
+Setting up blt (2.5.3+dfsg-4) ...
+Setting up python3-tk:amd64 (3.8.10-0ubuntu1~20.04) ...
+Setting up python-tk (2.7.18-1) ...
+Processing triggers for libc-bin (2.31-0ubuntu9.14) ...
+Processing triggers for man-db (2.9.1-1) ...
+Processing triggers for install-info (6.7.0.dfsg.2-5) ...
++ sudo DEBIAN_FRONTEND=noninteractive apt-get -y -q install --no-install-recommends pyflakes3 pep8
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  pycodestyle python3-pycodestyle python3-pyflakes
+Recommended packages:
+  pyflakes
+The following NEW packages will be installed:
+  pep8 pycodestyle pyflakes3 python3-pycodestyle python3-pyflakes
+0 upgraded, 5 newly installed, 0 to remove and 106 not upgraded.
+Need to get 99.4 kB of archives.
+After this operation, 522 kB of additional disk space will be used.
+Get:1 http://mirrors.aliyun.com/ubuntu focal/universe amd64 python3-pycodestyle all 2.5.0-2 [36.7 kB]
+Get:2 http://mirrors.aliyun.com/ubuntu focal/universe amd64 pycodestyle all 2.5.0-2 [5,092 B]
+Get:3 http://mirrors.aliyun.com/ubuntu focal/universe amd64 pep8 all 1.7.1-9ubuntu1 [5,568 B]
+Get:4 http://mirrors.aliyun.com/ubuntu focal-updates/universe amd64 python3-pyflakes all 2.1.1-2ubuntu1 [48.7 kB]
+Get:5 http://mirrors.aliyun.com/ubuntu focal-updates/universe amd64 pyflakes3 all 2.1.1-2ubuntu1 [3,336 B]
+Fetched 99.4 kB in 1s (117 kB/s)
+Selecting previously unselected package python3-pycodestyle.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 247508 files and directories currently installed.)
+Preparing to unpack .../python3-pycodestyle_2.5.0-2_all.deb ...
+Unpacking python3-pycodestyle (2.5.0-2) ...
+Selecting previously unselected package pycodestyle.
+Preparing to unpack .../pycodestyle_2.5.0-2_all.deb ...
+Unpacking pycodestyle (2.5.0-2) ...
+Selecting previously unselected package pep8.
+Preparing to unpack .../pep8_1.7.1-9ubuntu1_all.deb ...
+Unpacking pep8 (1.7.1-9ubuntu1) ...
+Selecting previously unselected package python3-pyflakes.
+Preparing to unpack .../python3-pyflakes_2.1.1-2ubuntu1_all.deb ...
+Unpacking python3-pyflakes (2.1.1-2ubuntu1) ...
+Selecting previously unselected package pyflakes3.
+Preparing to unpack .../pyflakes3_2.1.1-2ubuntu1_all.deb ...
+Unpacking pyflakes3 (2.1.1-2ubuntu1) ...
+Setting up python3-pyflakes (2.1.1-2ubuntu1) ...
+Setting up python3-pycodestyle (2.5.0-2) ...
+Setting up pycodestyle (2.5.0-2) ...
+Setting up pyflakes3 (2.1.1-2ubuntu1) ...
+Setting up pep8 (1.7.1-9ubuntu1) ...
+Processing triggers for man-db (2.9.1-1) ...
++ sudo DEBIAN_FRONTEND=noninteractive apt-get -y -q install python-pip
+Reading package lists...
+Building dependency tree...
+Reading state information...
+Package python-pip is not available, but is referred to by another package.
+This may mean that the package is missing, has been obsoleted, or
+is only available from another source
+However the following packages replace it:
+  python3-pip
+
+E: Package 'python-pip' has no installation candidate
++ sudo DEBIAN_FRONTEND=noninteractive apt-get -y -q install python-pip-whl
+Reading package lists...
+Building dependency tree...
+Reading state information...
+python-pip-whl is already the newest version (20.0.2-5ubuntu1.10).
+python-pip-whl set to manually installed.
+0 upgraded, 0 newly installed, 0 to remove and 106 not upgraded.
++ python -m pip -V
+/usr/bin/python: No module named pip
++ '[' 2 == 2 ']'
++ wget https://bootstrap.pypa.io/pip/2.7/get-pip.py
+--2024-02-27 14:42:34--  https://bootstrap.pypa.io/pip/2.7/get-pip.py
+Resolving bootstrap.pypa.io (bootstrap.pypa.io)... 2a04:4e42:1a::175, 146.75.112.175
+Connecting to bootstrap.pypa.io (bootstrap.pypa.io)|2a04:4e42:1a::175|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 1908226 (1.8M) [text/x-python]
+Saving to: ‘get-pip.py’
+
+     0K .......... .......... .......... .......... ..........  2%  253K 7s
+    50K .......... .......... .......... .......... ..........  5%  367K 6s
+   100K .......... .......... .......... .......... ..........  8% 1.65M 4s
+   150K .......... .......... .......... .......... .......... 10%  689K 4s
+   200K .......... .......... .......... .......... .......... 13% 1.89M 3s
+   250K .......... .......... .......... .......... .......... 16% 2.57M 3s
+   300K .......... .......... .......... .......... .......... 18% 2.03M 2s
+   350K .......... .......... .......... .......... .......... 21% 8.69M 2s
+   400K .......... .......... .......... .......... .......... 24%  870K 2s
+   450K .......... .......... .......... .......... .......... 26% 3.85M 2s
+   500K .......... .......... .......... .......... .......... 29%  546K 2s
+   550K .......... .......... .......... .......... .......... 32%  193M 1s
+   600K .......... .......... .......... .......... .......... 34%  223M 1s
+   650K .......... .......... .......... .......... .......... 37%  179M 1s
+   700K .......... .......... .......... .......... .......... 40%  223M 1s
+   750K .......... .......... .......... .......... .......... 42%  219M 1s
+   800K .......... .......... .......... .......... .......... 45% 19.9M 1s
+   850K .......... .......... .......... .......... .......... 48% 7.04M 1s
+   900K .......... .......... .......... .......... .......... 50%  279K 1s
+   950K .......... .......... .......... .......... .......... 53%  202M 1s
+  1000K .......... .......... .......... .......... .......... 56%  203M 1s
+  1050K .......... .......... .......... .......... .......... 59%  172M 1s
+  1100K .......... .......... .......... .......... .......... 61%  225M 1s
+  1150K .......... .......... .......... .......... .......... 64%  189M 0s
+  1200K .......... .......... .......... .......... .......... 67%  206M 0s
+  1250K .......... .......... .......... .......... .......... 69%  203M 0s
+  1300K .......... .......... .......... .......... .......... 72%  196M 0s
+  1350K .......... .......... .......... .......... .......... 75%  171M 0s
+  1400K .......... .......... .......... .......... .......... 77%  208M 0s
+  1450K .......... .......... .......... .......... .......... 80%  207M 0s
+  1500K .......... .......... .......... .......... .......... 83%  193M 0s
+  1550K .......... .......... .......... .......... .......... 85%  179M 0s
+  1600K .......... .......... .......... .......... .......... 88%  204M 0s
+  1650K .......... .......... .......... .......... .......... 91%  203M 0s
+  1700K .......... .......... .......... .......... .......... 93%  171M 0s
+  1750K .......... .......... .......... .......... .......... 96%  200M 0s
+  1800K .......... .......... .......... .......... .......... 99%  189M 0s
+  1850K .......... ...                                        100%  275M=0.9s
+
+2024-02-27 14:42:36 (2.10 MB/s) - ‘get-pip.py’ saved [1908226/1908226]
+
++ sudo python get-pip.py
+DEPRECATION: Python 2.7 reached the end of its life on January 1st, 2020. Please upgrade your Python as Python 2.7 is no longer maintained. pip 21.0 will drop support for Python 2.7 in January 2021. More details about Python 2 support in pip can be found at https://pip.pypa.io/en/latest/development/release-process/#python-2-support pip 21.0 will remove support for this functionality.
+Collecting pip<21.0
+  Downloading pip-20.3.4-py2.py3-none-any.whl (1.5 MB)
+Collecting setuptools<45
+  Downloading setuptools-44.1.1-py2.py3-none-any.whl (583 kB)
+Collecting wheel
+  Downloading wheel-0.37.1-py2.py3-none-any.whl (35 kB)
+Installing collected packages: pip, setuptools, wheel
+Successfully installed pip-20.3.4 setuptools-44.1.1 wheel-0.37.1
++ rm get-pip.py
++ python -m pip install pexpect
+DEPRECATION: Python 2.7 reached the end of its life on January 1st, 2020. Please upgrade your Python as Python 2.7 is no longer maintained. pip 21.0 will drop support for Python 2.7 in January 2021. More details about Python 2 support in pip can be found at https://pip.pypa.io/en/latest/development/release-process/#python-2-support pip 21.0 will remove support for this functionality.
+Collecting pexpect
+  Downloading pexpect-4.9.0-py2.py3-none-any.whl (63 kB)
+Collecting ptyprocess>=0.5
+  Downloading ptyprocess-0.7.0-py2.py3-none-any.whl (13 kB)
+Installing collected packages: ptyprocess, pexpect
+Successfully installed pexpect-4.9.0 ptyprocess-0.7.0
++ sudo DEBIAN_FRONTEND=noninteractive apt-get -y -q install iproute2
+Reading package lists...
+Building dependency tree...
+Reading state information...
+iproute2 is already the newest version (5.5.0-1ubuntu1).
+0 upgraded, 0 newly installed, 0 to remove and 106 not upgraded.
++ sudo DEBIAN_FRONTEND=noninteractive apt-get -y -q install cgroup-tools
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  libcgroup1
+The following NEW packages will be installed:
+  cgroup-tools libcgroup1
+0 upgraded, 2 newly installed, 0 to remove and 106 not upgraded.
+Need to get 109 kB of archives.
+After this operation, 472 kB of additional disk space will be used.
+Get:1 http://mirrors.aliyun.com/ubuntu focal/universe amd64 libcgroup1 amd64 0.41-10 [42.9 kB]
+Get:2 http://mirrors.aliyun.com/ubuntu focal/universe amd64 cgroup-tools amd64 0.41-10 [66.2 kB]
+Fetched 109 kB in 1s (155 kB/s)
+Selecting previously unselected package libcgroup1:amd64.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 247569 files and directories currently installed.)
+Preparing to unpack .../libcgroup1_0.41-10_amd64.deb ...
+Unpacking libcgroup1:amd64 (0.41-10) ...
+Selecting previously unselected package cgroup-tools.
+Preparing to unpack .../cgroup-tools_0.41-10_amd64.deb ...
+Unpacking cgroup-tools (0.41-10) ...
+Setting up libcgroup1:amd64 (0.41-10) ...
+Setting up cgroup-tools (0.41-10) ...
+Processing triggers for libc-bin (2.31-0ubuntu9.14) ...
+Processing triggers for man-db (2.9.1-1) ...
++ sudo DEBIAN_FRONTEND=noninteractive apt-get -y -q install cgroupfs-mount
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following NEW packages will be installed:
+  cgroupfs-mount
+0 upgraded, 1 newly installed, 0 to remove and 106 not upgraded.
+Need to get 6,320 B of archives.
+After this operation, 32.8 kB of additional disk space will be used.
+Get:1 http://mirrors.aliyun.com/ubuntu focal/universe amd64 cgroupfs-mount all 1.4 [6,320 B]
+Fetched 6,320 B in 0s (32.1 kB/s)
+Selecting previously unselected package cgroupfs-mount.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 247618 files and directories currently installed.)
+Preparing to unpack .../cgroupfs-mount_1.4_all.deb ...
+Unpacking cgroupfs-mount (1.4) ...
+Setting up cgroupfs-mount (1.4) ...
+Processing triggers for man-db (2.9.1-1) ...
+Processing triggers for systemd (245.4-4ubuntu3.20) ...
++ echo 'Installing Mininet core'
+Installing Mininet core
++ pushd /home/guang/zsy/p4/mininet
+/home/guang/zsy/p4/mininet /home/guang/zsy/p4
++ sudo PYTHON=python make install
+cc -Wall -Wextra  \
+-DVERSION=\"`PYTHONPATH=. python -B bin/mn --version 2>&1`\" mnexec.c -o mnexec
+install -D mnexec /usr/bin/mnexec
+PYTHONPATH=. help2man -N -n "create a Mininet network." \
+--no-discard-stderr "python -B bin/mn" -o mn.1
+help2man -N -n "execution utility for Mininet." \
+-h "-h" -v "-v" --no-discard-stderr ./mnexec -o mnexec.1
+install -D -t /usr/share/man/man1 mn.1 mnexec.1
+python -m pip uninstall -y mininet || true
+DEPRECATION: Python 2.7 reached the end of its life on January 1st, 2020. Please upgrade your Python as Python 2.7 is no longer maintained. pip 21.0 will drop support for Python 2.7 in January 2021. More details about Python 2 support in pip can be found at https://pip.pypa.io/en/latest/development/release-process/#python-2-support pip 21.0 will remove support for this functionality.
+WARNING: Skipping mininet as it is not installed.
+python -m pip install .
+DEPRECATION: Python 2.7 reached the end of its life on January 1st, 2020. Please upgrade your Python as Python 2.7 is no longer maintained. pip 21.0 will drop support for Python 2.7 in January 2021. More details about Python 2 support in pip can be found at https://pip.pypa.io/en/latest/development/release-process/#python-2-support pip 21.0 will remove support for this functionality.
+Processing /home/guang/zsy/p4/mininet
+Requirement already satisfied: setuptools in /usr/local/lib/python2.7/dist-packages (from mininet==2.3.1b4) (44.1.1)
+Building wheels for collected packages: mininet
+  Building wheel for mininet (setup.py): started
+  Building wheel for mininet (setup.py): finished with status 'done'
+  Created wheel for mininet: filename=mininet-2.3.1b4-py2-none-any.whl size=160951 sha256=e6882be801847d969194000e4e1b89997eb065a4f0d91a55aa9e1d6b691ed461
+  Stored in directory: /tmp/pip-ephem-wheel-cache-Tf_sfH/wheels/63/6f/7c/35b270c86fd085312f320f440419294f0591892cea968a1c39
+Successfully built mininet
+Installing collected packages: mininet
+Successfully installed mininet-2.3.1b4
++ popd
+/home/guang/zsy/p4
++ getopts abcdefhikmnprs:tvV:wxy03 OPTION
++ case $OPTION in
++ install_wireshark
++ which wireshark
++ echo 'Installing Wireshark'
+Installing Wireshark
++ '[' Ubuntu = Fedora -o Ubuntu = RedHatEnterpriseServer ']'
++ '[' Ubuntu = 'SUSE LINUX' ']'
++ sudo DEBIAN_FRONTEND=noninteractive apt-get -y -q install wireshark tshark
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  liblua5.2-0 libqt5gui5 libqt5multimedia5 libqt5multimedia5-plugins
+  libqt5multimediagsttools5 libqt5multimediawidgets5 libqt5opengl5
+  libqt5printsupport5 libqt5svg5 libqt5widgets5 libsmi2ldbl libsnappy1v5
+  libspandsp2 libssh-gcrypt-4 libwireshark-data libwireshark13 libwiretap10
+  libwsutil11 libxcb-xinerama0 libxcb-xinput0 qt5-gtk-platformtheme
+  wireshark-common wireshark-qt
+Suggested packages:
+  qt5-image-formats-plugins qtwayland5 snmp-mibs-downloader geoipupdate
+  geoip-database geoip-database-extra libjs-leaflet
+  libjs-leaflet.markercluster wireshark-doc
+The following NEW packages will be installed:
+  liblua5.2-0 libqt5gui5 libqt5multimedia5 libqt5multimedia5-plugins
+  libqt5multimediagsttools5 libqt5multimediawidgets5 libqt5opengl5
+  libqt5printsupport5 libqt5svg5 libqt5widgets5 libsmi2ldbl libsnappy1v5
+  libspandsp2 libssh-gcrypt-4 libwireshark-data libwireshark13 libwiretap10
+  libwsutil11 libxcb-xinerama0 libxcb-xinput0 qt5-gtk-platformtheme tshark
+  wireshark wireshark-common wireshark-qt
+0 upgraded, 25 newly installed, 0 to remove and 106 not upgraded.
+Need to get 28.4 MB of archives.
+After this operation, 141 MB of additional disk space will be used.
+Get:1 http://mirrors.aliyun.com/ubuntu focal/main amd64 libxcb-xinerama0 amd64 1.14-2 [5,260 B]
+Get:2 http://mirrors.aliyun.com/ubuntu focal/main amd64 libxcb-xinput0 amd64 1.14-2 [29.3 kB]
+Get:3 http://mirrors.aliyun.com/ubuntu focal-updates/universe amd64 libqt5gui5 amd64 5.12.8+dfsg-0ubuntu2.1 [2,971 kB]
+Get:4 http://mirrors.aliyun.com/ubuntu focal-updates/universe amd64 libqt5widgets5 amd64 5.12.8+dfsg-0ubuntu2.1 [2,295 kB]
+Get:5 http://mirrors.aliyun.com/ubuntu focal/universe amd64 libqt5svg5 amd64 5.12.8-0ubuntu1 [131 kB]
+Get:6 http://mirrors.aliyun.com/ubuntu focal/main amd64 liblua5.2-0 amd64 5.2.4-1.1build3 [106 kB]
+Get:7 http://mirrors.aliyun.com/ubuntu focal/universe amd64 libqt5multimedia5 amd64 5.12.8-0ubuntu1 [283 kB]
+Get:8 http://mirrors.aliyun.com/ubuntu focal-updates/universe amd64 libqt5opengl5 amd64 5.12.8+dfsg-0ubuntu2.1 [136 kB]
+Get:9 http://mirrors.aliyun.com/ubuntu focal/universe amd64 libqt5multimediawidgets5 amd64 5.12.8-0ubuntu1 [36.8 kB]
+Get:10 http://mirrors.aliyun.com/ubuntu focal/universe amd64 libqt5multimediagsttools5 amd64 5.12.8-0ubuntu1 [104 kB]
+Get:11 http://mirrors.aliyun.com/ubuntu focal/universe amd64 libqt5multimedia5-plugins amd64 5.12.8-0ubuntu1 [197 kB]
+Get:12 http://mirrors.aliyun.com/ubuntu focal-updates/universe amd64 libqt5printsupport5 amd64 5.12.8+dfsg-0ubuntu2.1 [193 kB]
+Get:13 http://mirrors.aliyun.com/ubuntu focal/universe amd64 libsmi2ldbl amd64 0.4.8+dfsg2-16 [100 kB]
+Get:14 http://mirrors.aliyun.com/ubuntu focal/universe amd64 libspandsp2 amd64 0.0.6+dfsg-2 [272 kB]
+Get:15 http://mirrors.aliyun.com/ubuntu focal-updates/main amd64 libssh-gcrypt-4 amd64 0.9.3-2ubuntu2.5 [202 kB]
+Get:16 http://mirrors.aliyun.com/ubuntu focal/universe amd64 libwireshark-data all 3.2.3-1 [1,456 kB]
+Get:17 http://mirrors.aliyun.com/ubuntu focal/main amd64 libsnappy1v5 amd64 1.1.8-1build1 [16.7 kB]
+Get:18 http://mirrors.aliyun.com/ubuntu focal/universe amd64 libwsutil11 amd64 3.2.3-1 [61.1 kB]
+Get:19 http://mirrors.aliyun.com/ubuntu focal/universe amd64 libwiretap10 amd64 3.2.3-1 [199 kB]
+Get:20 http://mirrors.aliyun.com/ubuntu focal/universe amd64 libwireshark13 amd64 3.2.3-1 [15.2 MB]
+Get:21 http://mirrors.aliyun.com/ubuntu focal-updates/universe amd64 qt5-gtk-platformtheme amd64 5.12.8+dfsg-0ubuntu2.1 [124 kB]
+Get:22 http://mirrors.aliyun.com/ubuntu focal/universe amd64 wireshark-common amd64 3.2.3-1 [441 kB]
+Get:23 http://mirrors.aliyun.com/ubuntu focal/universe amd64 tshark amd64 3.2.3-1 [137 kB]
+Get:24 http://mirrors.aliyun.com/ubuntu focal/universe amd64 wireshark-qt amd64 3.2.3-1 [3,774 kB]
+Get:25 http://mirrors.aliyun.com/ubuntu focal/universe amd64 wireshark amd64 3.2.3-1 [5,088 B]
+Preconfiguring packages ...
+Fetched 28.4 MB in 36s (783 kB/s)
+Selecting previously unselected package libxcb-xinerama0:amd64.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 247628 files and directories currently installed.)
+Preparing to unpack .../00-libxcb-xinerama0_1.14-2_amd64.deb ...
+Unpacking libxcb-xinerama0:amd64 (1.14-2) ...
+Selecting previously unselected package libxcb-xinput0:amd64.
+Preparing to unpack .../01-libxcb-xinput0_1.14-2_amd64.deb ...
+Unpacking libxcb-xinput0:amd64 (1.14-2) ...
+Selecting previously unselected package libqt5gui5:amd64.
+Preparing to unpack .../02-libqt5gui5_5.12.8+dfsg-0ubuntu2.1_amd64.deb ...
+Unpacking libqt5gui5:amd64 (5.12.8+dfsg-0ubuntu2.1) ...
+Selecting previously unselected package libqt5widgets5:amd64.
+Preparing to unpack .../03-libqt5widgets5_5.12.8+dfsg-0ubuntu2.1_amd64.deb ...
+Unpacking libqt5widgets5:amd64 (5.12.8+dfsg-0ubuntu2.1) ...
+Selecting previously unselected package libqt5svg5:amd64.
+Preparing to unpack .../04-libqt5svg5_5.12.8-0ubuntu1_amd64.deb ...
+Unpacking libqt5svg5:amd64 (5.12.8-0ubuntu1) ...
+Selecting previously unselected package liblua5.2-0:amd64.
+Preparing to unpack .../05-liblua5.2-0_5.2.4-1.1build3_amd64.deb ...
+Unpacking liblua5.2-0:amd64 (5.2.4-1.1build3) ...
+Selecting previously unselected package libqt5multimedia5:amd64.
+Preparing to unpack .../06-libqt5multimedia5_5.12.8-0ubuntu1_amd64.deb ...
+Unpacking libqt5multimedia5:amd64 (5.12.8-0ubuntu1) ...
+Selecting previously unselected package libqt5opengl5:amd64.
+Preparing to unpack .../07-libqt5opengl5_5.12.8+dfsg-0ubuntu2.1_amd64.deb ...
+Unpacking libqt5opengl5:amd64 (5.12.8+dfsg-0ubuntu2.1) ...
+Selecting previously unselected package libqt5multimediawidgets5:amd64.
+Preparing to unpack .../08-libqt5multimediawidgets5_5.12.8-0ubuntu1_amd64.deb ...
+Unpacking libqt5multimediawidgets5:amd64 (5.12.8-0ubuntu1) ...
+Selecting previously unselected package libqt5multimediagsttools5:amd64.
+Preparing to unpack .../09-libqt5multimediagsttools5_5.12.8-0ubuntu1_amd64.deb ...
+Unpacking libqt5multimediagsttools5:amd64 (5.12.8-0ubuntu1) ...
+Selecting previously unselected package libqt5multimedia5-plugins:amd64.
+Preparing to unpack .../10-libqt5multimedia5-plugins_5.12.8-0ubuntu1_amd64.deb ...
+Unpacking libqt5multimedia5-plugins:amd64 (5.12.8-0ubuntu1) ...
+Selecting previously unselected package libqt5printsupport5:amd64.
+Preparing to unpack .../11-libqt5printsupport5_5.12.8+dfsg-0ubuntu2.1_amd64.deb ...
+Unpacking libqt5printsupport5:amd64 (5.12.8+dfsg-0ubuntu2.1) ...
+Selecting previously unselected package libsmi2ldbl:amd64.
+Preparing to unpack .../12-libsmi2ldbl_0.4.8+dfsg2-16_amd64.deb ...
+Unpacking libsmi2ldbl:amd64 (0.4.8+dfsg2-16) ...
+Selecting previously unselected package libspandsp2:amd64.
+Preparing to unpack .../13-libspandsp2_0.0.6+dfsg-2_amd64.deb ...
+Unpacking libspandsp2:amd64 (0.0.6+dfsg-2) ...
+Selecting previously unselected package libssh-gcrypt-4:amd64.
+Preparing to unpack .../14-libssh-gcrypt-4_0.9.3-2ubuntu2.5_amd64.deb ...
+Unpacking libssh-gcrypt-4:amd64 (0.9.3-2ubuntu2.5) ...
+Selecting previously unselected package libwireshark-data.
+Preparing to unpack .../15-libwireshark-data_3.2.3-1_all.deb ...
+Unpacking libwireshark-data (3.2.3-1) ...
+Selecting previously unselected package libsnappy1v5:amd64.
+Preparing to unpack .../16-libsnappy1v5_1.1.8-1build1_amd64.deb ...
+Unpacking libsnappy1v5:amd64 (1.1.8-1build1) ...
+Selecting previously unselected package libwsutil11:amd64.
+Preparing to unpack .../17-libwsutil11_3.2.3-1_amd64.deb ...
+Unpacking libwsutil11:amd64 (3.2.3-1) ...
+Selecting previously unselected package libwiretap10:amd64.
+Preparing to unpack .../18-libwiretap10_3.2.3-1_amd64.deb ...
+Unpacking libwiretap10:amd64 (3.2.3-1) ...
+Selecting previously unselected package libwireshark13:amd64.
+Preparing to unpack .../19-libwireshark13_3.2.3-1_amd64.deb ...
+Unpacking libwireshark13:amd64 (3.2.3-1) ...
+Selecting previously unselected package qt5-gtk-platformtheme:amd64.
+Preparing to unpack .../20-qt5-gtk-platformtheme_5.12.8+dfsg-0ubuntu2.1_amd64.deb ...
+Unpacking qt5-gtk-platformtheme:amd64 (5.12.8+dfsg-0ubuntu2.1) ...
+Selecting previously unselected package wireshark-common.
+Preparing to unpack .../21-wireshark-common_3.2.3-1_amd64.deb ...
+Unpacking wireshark-common (3.2.3-1) ...
+Selecting previously unselected package tshark.
+Preparing to unpack .../22-tshark_3.2.3-1_amd64.deb ...
+Unpacking tshark (3.2.3-1) ...
+Selecting previously unselected package wireshark-qt.
+Preparing to unpack .../23-wireshark-qt_3.2.3-1_amd64.deb ...
+Unpacking wireshark-qt (3.2.3-1) ...
+Selecting previously unselected package wireshark.
+Preparing to unpack .../24-wireshark_3.2.3-1_amd64.deb ...
+Unpacking wireshark (3.2.3-1) ...
+Setting up libssh-gcrypt-4:amd64 (0.9.3-2ubuntu2.5) ...
+Setting up libxcb-xinput0:amd64 (1.14-2) ...
+Setting up libwsutil11:amd64 (3.2.3-1) ...
+Setting up libspandsp2:amd64 (0.0.6+dfsg-2) ...
+Setting up libsnappy1v5:amd64 (1.1.8-1build1) ...
+Setting up libsmi2ldbl:amd64 (0.4.8+dfsg2-16) ...
+Setting up libwiretap10:amd64 (3.2.3-1) ...
+Setting up libxcb-xinerama0:amd64 (1.14-2) ...
+Setting up libwireshark-data (3.2.3-1) ...
+Setting up liblua5.2-0:amd64 (5.2.4-1.1build3) ...
+Setting up libwireshark13:amd64 (3.2.3-1) ...
+Setting up libqt5gui5:amd64 (5.12.8+dfsg-0ubuntu2.1) ...
+Setting up libqt5widgets5:amd64 (5.12.8+dfsg-0ubuntu2.1) ...
+Setting up qt5-gtk-platformtheme:amd64 (5.12.8+dfsg-0ubuntu2.1) ...
+Setting up libqt5multimedia5:amd64 (5.12.8-0ubuntu1) ...
+Setting up libqt5printsupport5:amd64 (5.12.8+dfsg-0ubuntu2.1) ...
+Setting up libqt5opengl5:amd64 (5.12.8+dfsg-0ubuntu2.1) ...
+Setting up wireshark-common (3.2.3-1) ...
+Setting up libqt5svg5:amd64 (5.12.8-0ubuntu1) ...
+Setting up tshark (3.2.3-1) ...
+Setting up libqt5multimediawidgets5:amd64 (5.12.8-0ubuntu1) ...
+Setting up wireshark-qt (3.2.3-1) ...
+Setting up libqt5multimediagsttools5:amd64 (5.12.8-0ubuntu1) ...
+Setting up libqt5multimedia5-plugins:amd64 (5.12.8-0ubuntu1) ...
+Setting up wireshark (3.2.3-1) ...
+Processing triggers for libc-bin (2.31-0ubuntu9.14) ...
+Processing triggers for man-db (2.9.1-1) ...
+Processing triggers for shared-mime-info (1.15-1) ...
+Processing triggers for desktop-file-utils (0.24-1ubuntu3) ...
+Processing triggers for mime-support (3.64ubuntu1) ...
+Processing triggers for hicolor-icon-theme (0.17-2) ...
+Processing triggers for gnome-menus (3.36.0-1ubuntu1) ...
++ echo 'Optionally installing wireshark color filters'
+Optionally installing wireshark color filters
++ mkdir -p /root/.wireshark
++ cp -n /home/guang/zsy/p4/mininet/util/colorfilters /root/.wireshark
++ echo 'Checking Wireshark version'
+Checking Wireshark version
+++ wireshark -v
+++ egrep -o '[0-9\.]+'
+++ head -1
++ WSVER=3.2.3
++ version_ge 3.2.3 1.12
+++ printf '3.2.3\n1.12'
+++ sort -V
+++ tail -1
++ latest=3.2.3
++ '[' 3.2.3 == 3.2.3 ']'
++ echo 'Wireshark version 3.2.3 >= 1.12 - returning'
+Wireshark version 3.2.3 >= 1.12 - returning
++ return
++ getopts abcdefhikmnprs:tvV:wxy03 OPTION
++ shift 1
++ set +x
+end install mininet:
++ date
+2024年 02月 27日 星期二 14:43:49 CST
++ cd /home/guang/zsy/p4
++ find /usr/lib /usr/local /root/.local
++ sort
++ lsb_release -a
+No LSB modules are available.
+Distributor ID:	Ubuntu
+Description:	Ubuntu 20.04.5 LTS
+Release:	20.04
+Codename:	focal
++ python -V
+Python 3.9.12
++ python2 -V
+Python 2.7.18
++ python3 -V
+Python 3.9.12
++ pip -V
+pip 21.2.4 from /opt/anaconda3/lib/python3.9/site-packages/pip (python 3.9)
++ pip2 -V
+pip 20.3.4 from /usr/local/lib/python2.7/dist-packages/pip (python 2.7)
++ pip3 -V
+pip 21.2.4 from /opt/anaconda3/lib/python3.9/site-packages/pip (python 3.9)
++ pip list
+Package                       Version
+----------------------------- --------------------
+aiohttp                       3.8.1
+aiosignal                     1.2.0
+alabaster                     0.7.12
+anaconda-client               1.9.0
+anaconda-navigator            2.1.4
+anaconda-project              0.10.2
+anyio                         3.5.0
+appdirs                       1.4.4
+argon2-cffi                   21.3.0
+argon2-cffi-bindings          21.2.0
+arrow                         1.2.2
+astroid                       2.6.6
+astropy                       5.0.4
+asttokens                     2.0.5
+async-timeout                 4.0.1
+atomicwrites                  1.4.0
+attrs                         21.4.0
+Automat                       20.2.0
+autopep8                      1.6.0
+Babel                         2.9.1
+backcall                      0.2.0
+backports.functools-lru-cache 1.6.4
+backports.tempfile            1.0
+backports.weakref             1.0.post1
+bcrypt                        3.2.0
+beautifulsoup4                4.11.1
+binaryornot                   0.4.4
+bitarray                      2.4.1
+bkcharts                      0.2
+black                         19.10b0
+bleach                        4.1.0
+bokeh                         2.4.2
+boto3                         1.21.32
+botocore                      1.24.32
+Bottleneck                    1.3.4
+brotlipy                      0.7.0
+cachetools                    4.2.2
+certifi                       2021.10.8
+cffi                          1.15.0
+chardet                       4.0.0
+charset-normalizer            2.0.4
+click                         8.0.4
+cloudpickle                   2.0.0
+clyent                        1.2.2
+colorama                      0.4.4
+colorcet                      2.0.6
+conda                         4.12.0
+conda-build                   3.21.8
+conda-content-trust           0+unknown
+conda-pack                    0.6.0
+conda-package-handling        1.8.1
+conda-repo-cli                1.0.4
+conda-token                   0.3.0
+conda-verify                  3.4.2
+constantly                    15.1.0
+cookiecutter                  1.7.3
+cryptography                  3.4.8
+cssselect                     1.1.0
+cycler                        0.11.0
+Cython                        0.29.28
+cytoolz                       0.11.0
+daal4py                       2021.5.0
+dask                          2022.2.1
+datashader                    0.13.0
+datashape                     0.5.4
+debugpy                       1.5.1
+decorator                     5.1.1
+defusedxml                    0.7.1
+diff-match-patch              20200713
+distributed                   2022.2.1
+docutils                      0.17.1
+entrypoints                   0.4
+et-xmlfile                    1.1.0
+executing                     0.8.3
+fastjsonschema                2.15.1
+filelock                      3.6.0
+flake8                        3.9.2
+Flask                         1.1.2
+fonttools                     4.25.0
+frozenlist                    1.2.0
+fsspec                        2022.2.0
+future                        0.18.2
+gensim                        4.1.2
+glob2                         0.7
+gmpy2                         2.1.2
+google-api-core               1.25.1
+google-auth                   1.33.0
+google-cloud-core             1.7.1
+google-cloud-storage          1.31.0
+google-crc32c                 1.1.2
+google-resumable-media        1.3.1
+googleapis-common-protos      1.53.0
+greenlet                      1.1.1
+grpcio                        1.42.0
+h5py                          3.6.0
+HeapDict                      1.0.1
+holoviews                     1.14.8
+hvplot                        0.7.3
+hyperlink                     21.0.0
+idna                          3.3
+imagecodecs                   2021.8.26
+imageio                       2.9.0
+imagesize                     1.3.0
+importlib-metadata            4.11.3
+incremental                   21.3.0
+inflection                    0.5.1
+iniconfig                     1.1.1
+intake                        0.6.5
+intervaltree                  3.1.0
+ipykernel                     6.9.1
+ipython                       8.2.0
+ipython-genutils              0.2.0
+ipywidgets                    7.6.5
+isort                         5.9.3
+itemadapter                   0.3.0
+itemloaders                   1.0.4
+itsdangerous                  2.0.1
+jdcal                         1.4.1
+jedi                          0.18.1
+jeepney                       0.7.1
+Jinja2                        2.11.3
+jinja2-time                   0.2.0
+jmespath                      0.10.0
+joblib                        1.1.0
+json5                         0.9.6
+jsonschema                    4.4.0
+jupyter                       1.0.0
+jupyter-client                6.1.12
+jupyter-console               6.4.0
+jupyter-core                  4.9.2
+jupyter-server                1.13.5
+jupyterlab                    3.3.2
+jupyterlab-pygments           0.1.2
+jupyterlab-server             2.10.3
+jupyterlab-widgets            1.0.0
+keyring                       23.4.0
+kiwisolver                    1.3.2
+lazy-object-proxy             1.6.0
+libarchive-c                  2.9
+llvmlite                      0.38.0
+locket                        0.2.1
+lxml                          4.8.0
+Markdown                      3.3.4
+MarkupSafe                    2.0.1
+matplotlib                    3.5.1
+matplotlib-inline             0.1.2
+mccabe                        0.6.1
+mistune                       0.8.4
+mkl-fft                       1.3.1
+mkl-random                    1.2.2
+mkl-service                   2.4.0
+mock                          4.0.3
+mpmath                        1.2.1
+msgpack                       1.0.2
+multidict                     5.2.0
+multipledispatch              0.6.0
+munkres                       1.1.4
+mypy-extensions               0.4.3
+navigator-updater             0.2.1
+nbclassic                     0.3.5
+nbclient                      0.5.13
+nbconvert                     6.4.4
+nbformat                      5.3.0
+nest-asyncio                  1.5.5
+networkx                      2.7.1
+nltk                          3.7
+nose                          1.3.7
+notebook                      6.4.8
+numba                         0.55.1
+numexpr                       2.8.1
+numpy                         1.21.5
+numpydoc                      1.2
+olefile                       0.46
+openpyxl                      3.0.9
+packaging                     21.3
+pandas                        1.4.2
+pandocfilters                 1.5.0
+panel                         0.13.0
+param                         1.12.0
+parsel                        1.6.0
+parso                         0.8.3
+partd                         1.2.0
+pathspec                      0.7.0
+patsy                         0.5.2
+pep8                          1.7.1
+pexpect                       4.8.0
+pickleshare                   0.7.5
+Pillow                        9.0.1
+pip                           21.2.4
+pkginfo                       1.8.2
+plotly                        5.6.0
+pluggy                        1.0.0
+poyo                          0.5.0
+prometheus-client             0.13.1
+prompt-toolkit                3.0.20
+Protego                       0.1.16
+protobuf                      3.19.1
+psutil                        5.8.0
+ptyprocess                    0.7.0
+pure-eval                     0.2.2
+py                            1.11.0
+pyasn1                        0.4.8
+pyasn1-modules                0.2.8
+pycodestyle                   2.7.0
+pycosat                       0.6.3
+pycparser                     2.21
+pyct                          0.4.6
+pycurl                        7.44.1
+PyDispatcher                  2.0.5
+pydocstyle                    6.1.1
+pyerfa                        2.0.0
+pyflakes                      2.3.1
+Pygments                      2.11.2
+PyHamcrest                    2.0.2
+PyJWT                         2.1.0
+pylint                        2.9.6
+pyls-spyder                   0.4.0
+pyodbc                        4.0.32
+pyOpenSSL                     21.0.0
+pyparsing                     3.0.4
+pyrsistent                    0.18.0
+PySocks                       1.7.1
+pytest                        7.1.1
+python-dateutil               2.8.2
+python-lsp-black              1.0.0
+python-lsp-jsonrpc            1.0.0
+python-lsp-server             1.2.4
+python-slugify                5.0.2
+python-snappy                 0.6.0
+pytz                          2021.3
+pyviz-comms                   2.0.2
+PyWavelets                    1.3.0
+pyxdg                         0.27
+PyYAML                        6.0
+pyzmq                         22.3.0
+QDarkStyle                    3.0.2
+qstylizer                     0.1.10
+QtAwesome                     1.0.3
+qtconsole                     5.3.0
+QtPy                          2.0.1
+queuelib                      1.5.0
+regex                         2022.3.15
+requests                      2.27.1
+requests-file                 1.5.1
+rope                          0.22.0
+rsa                           4.7.2
+Rtree                         0.9.7
+ruamel-yaml-conda             0.15.100
+s3transfer                    0.5.0
+scikit-image                  0.19.2
+scikit-learn                  1.0.2
+scikit-learn-intelex          2021.20220215.212715
+scipy                         1.7.3
+Scrapy                        2.6.1
+seaborn                       0.11.2
+SecretStorage                 3.3.1
+Send2Trash                    1.8.0
+service-identity              18.1.0
+setuptools                    61.2.0
+sip                           4.19.13
+six                           1.16.0
+smart-open                    5.1.0
+sniffio                       1.2.0
+snowballstemmer               2.2.0
+sortedcollections             2.1.0
+sortedcontainers              2.4.0
+soupsieve                     2.3.1
+Sphinx                        4.4.0
+sphinxcontrib-applehelp       1.0.2
+sphinxcontrib-devhelp         1.0.2
+sphinxcontrib-htmlhelp        2.0.0
+sphinxcontrib-jsmath          1.0.1
+sphinxcontrib-qthelp          1.0.3
+sphinxcontrib-serializinghtml 1.1.5
+spyder                        5.1.5
+spyder-kernels                2.1.3
+SQLAlchemy                    1.4.32
+stack-data                    0.2.0
+statsmodels                   0.13.2
+sympy                         1.10.1
+tables                        3.6.1
+tabulate                      0.8.9
+TBB                           0.2
+tblib                         1.7.0
+tenacity                      8.0.1
+terminado                     0.13.1
+testpath                      0.5.0
+text-unidecode                1.3
+textdistance                  4.2.1
+threadpoolctl                 2.2.0
+three-merge                   0.1.1
+tifffile                      2021.7.2
+tinycss                       0.4
+tldextract                    3.2.0
+toml                          0.10.2
+tomli                         1.2.2
+toolz                         0.11.2
+tornado                       6.1
+tqdm                          4.64.0
+traitlets                     5.1.1
+Twisted                       22.2.0
+typed-ast                     1.4.3
+typing_extensions             4.1.1
+ujson                         5.1.0
+Unidecode                     1.2.0
+urllib3                       1.26.9
+w3lib                         1.21.0
+watchdog                      2.1.6
+wcwidth                       0.2.5
+webencodings                  0.5.1
+websocket-client              0.58.0
+Werkzeug                      2.0.3
+wheel                         0.37.1
+widgetsnbextension            3.5.2
+wrapt                         1.12.1
+wurlitzer                     3.0.2
+xarray                        0.20.1
+xlrd                          2.0.1
+XlsxWriter                    3.0.3
+yapf                          0.31.0
+yarl                          1.6.3
+zict                          2.0.0
+zipp                          3.7.0
+zope.interface                5.4.0
++ pip3 list
+Package                       Version
+----------------------------- --------------------
+aiohttp                       3.8.1
+aiosignal                     1.2.0
+alabaster                     0.7.12
+anaconda-client               1.9.0
+anaconda-navigator            2.1.4
+anaconda-project              0.10.2
+anyio                         3.5.0
+appdirs                       1.4.4
+argon2-cffi                   21.3.0
+argon2-cffi-bindings          21.2.0
+arrow                         1.2.2
+astroid                       2.6.6
+astropy                       5.0.4
+asttokens                     2.0.5
+async-timeout                 4.0.1
+atomicwrites                  1.4.0
+attrs                         21.4.0
+Automat                       20.2.0
+autopep8                      1.6.0
+Babel                         2.9.1
+backcall                      0.2.0
+backports.functools-lru-cache 1.6.4
+backports.tempfile            1.0
+backports.weakref             1.0.post1
+bcrypt                        3.2.0
+beautifulsoup4                4.11.1
+binaryornot                   0.4.4
+bitarray                      2.4.1
+bkcharts                      0.2
+black                         19.10b0
+bleach                        4.1.0
+bokeh                         2.4.2
+boto3                         1.21.32
+botocore                      1.24.32
+Bottleneck                    1.3.4
+brotlipy                      0.7.0
+cachetools                    4.2.2
+certifi                       2021.10.8
+cffi                          1.15.0
+chardet                       4.0.0
+charset-normalizer            2.0.4
+click                         8.0.4
+cloudpickle                   2.0.0
+clyent                        1.2.2
+colorama                      0.4.4
+colorcet                      2.0.6
+conda                         4.12.0
+conda-build                   3.21.8
+conda-content-trust           0+unknown
+conda-pack                    0.6.0
+conda-package-handling        1.8.1
+conda-repo-cli                1.0.4
+conda-token                   0.3.0
+conda-verify                  3.4.2
+constantly                    15.1.0
+cookiecutter                  1.7.3
+cryptography                  3.4.8
+cssselect                     1.1.0
+cycler                        0.11.0
+Cython                        0.29.28
+cytoolz                       0.11.0
+daal4py                       2021.5.0
+dask                          2022.2.1
+datashader                    0.13.0
+datashape                     0.5.4
+debugpy                       1.5.1
+decorator                     5.1.1
+defusedxml                    0.7.1
+diff-match-patch              20200713
+distributed                   2022.2.1
+docutils                      0.17.1
+entrypoints                   0.4
+et-xmlfile                    1.1.0
+executing                     0.8.3
+fastjsonschema                2.15.1
+filelock                      3.6.0
+flake8                        3.9.2
+Flask                         1.1.2
+fonttools                     4.25.0
+frozenlist                    1.2.0
+fsspec                        2022.2.0
+future                        0.18.2
+gensim                        4.1.2
+glob2                         0.7
+gmpy2                         2.1.2
+google-api-core               1.25.1
+google-auth                   1.33.0
+google-cloud-core             1.7.1
+google-cloud-storage          1.31.0
+google-crc32c                 1.1.2
+google-resumable-media        1.3.1
+googleapis-common-protos      1.53.0
+greenlet                      1.1.1
+grpcio                        1.42.0
+h5py                          3.6.0
+HeapDict                      1.0.1
+holoviews                     1.14.8
+hvplot                        0.7.3
+hyperlink                     21.0.0
+idna                          3.3
+imagecodecs                   2021.8.26
+imageio                       2.9.0
+imagesize                     1.3.0
+importlib-metadata            4.11.3
+incremental                   21.3.0
+inflection                    0.5.1
+iniconfig                     1.1.1
+intake                        0.6.5
+intervaltree                  3.1.0
+ipykernel                     6.9.1
+ipython                       8.2.0
+ipython-genutils              0.2.0
+ipywidgets                    7.6.5
+isort                         5.9.3
+itemadapter                   0.3.0
+itemloaders                   1.0.4
+itsdangerous                  2.0.1
+jdcal                         1.4.1
+jedi                          0.18.1
+jeepney                       0.7.1
+Jinja2                        2.11.3
+jinja2-time                   0.2.0
+jmespath                      0.10.0
+joblib                        1.1.0
+json5                         0.9.6
+jsonschema                    4.4.0
+jupyter                       1.0.0
+jupyter-client                6.1.12
+jupyter-console               6.4.0
+jupyter-core                  4.9.2
+jupyter-server                1.13.5
+jupyterlab                    3.3.2
+jupyterlab-pygments           0.1.2
+jupyterlab-server             2.10.3
+jupyterlab-widgets            1.0.0
+keyring                       23.4.0
+kiwisolver                    1.3.2
+lazy-object-proxy             1.6.0
+libarchive-c                  2.9
+llvmlite                      0.38.0
+locket                        0.2.1
+lxml                          4.8.0
+Markdown                      3.3.4
+MarkupSafe                    2.0.1
+matplotlib                    3.5.1
+matplotlib-inline             0.1.2
+mccabe                        0.6.1
+mistune                       0.8.4
+mkl-fft                       1.3.1
+mkl-random                    1.2.2
+mkl-service                   2.4.0
+mock                          4.0.3
+mpmath                        1.2.1
+msgpack                       1.0.2
+multidict                     5.2.0
+multipledispatch              0.6.0
+munkres                       1.1.4
+mypy-extensions               0.4.3
+navigator-updater             0.2.1
+nbclassic                     0.3.5
+nbclient                      0.5.13
+nbconvert                     6.4.4
+nbformat                      5.3.0
+nest-asyncio                  1.5.5
+networkx                      2.7.1
+nltk                          3.7
+nose                          1.3.7
+notebook                      6.4.8
+numba                         0.55.1
+numexpr                       2.8.1
+numpy                         1.21.5
+numpydoc                      1.2
+olefile                       0.46
+openpyxl                      3.0.9
+packaging                     21.3
+pandas                        1.4.2
+pandocfilters                 1.5.0
+panel                         0.13.0
+param                         1.12.0
+parsel                        1.6.0
+parso                         0.8.3
+partd                         1.2.0
+pathspec                      0.7.0
+patsy                         0.5.2
+pep8                          1.7.1
+pexpect                       4.8.0
+pickleshare                   0.7.5
+Pillow                        9.0.1
+pip                           21.2.4
+pkginfo                       1.8.2
+plotly                        5.6.0
+pluggy                        1.0.0
+poyo                          0.5.0
+prometheus-client             0.13.1
+prompt-toolkit                3.0.20
+Protego                       0.1.16
+protobuf                      3.19.1
+psutil                        5.8.0
+ptyprocess                    0.7.0
+pure-eval                     0.2.2
+py                            1.11.0
+pyasn1                        0.4.8
+pyasn1-modules                0.2.8
+pycodestyle                   2.7.0
+pycosat                       0.6.3
+pycparser                     2.21
+pyct                          0.4.6
+pycurl                        7.44.1
+PyDispatcher                  2.0.5
+pydocstyle                    6.1.1
+pyerfa                        2.0.0
+pyflakes                      2.3.1
+Pygments                      2.11.2
+PyHamcrest                    2.0.2
+PyJWT                         2.1.0
+pylint                        2.9.6
+pyls-spyder                   0.4.0
+pyodbc                        4.0.32
+pyOpenSSL                     21.0.0
+pyparsing                     3.0.4
+pyrsistent                    0.18.0
+PySocks                       1.7.1
+pytest                        7.1.1
+python-dateutil               2.8.2
+python-lsp-black              1.0.0
+python-lsp-jsonrpc            1.0.0
+python-lsp-server             1.2.4
+python-slugify                5.0.2
+python-snappy                 0.6.0
+pytz                          2021.3
+pyviz-comms                   2.0.2
+PyWavelets                    1.3.0
+pyxdg                         0.27
+PyYAML                        6.0
+pyzmq                         22.3.0
+QDarkStyle                    3.0.2
+qstylizer                     0.1.10
+QtAwesome                     1.0.3
+qtconsole                     5.3.0
+QtPy                          2.0.1
+queuelib                      1.5.0
+regex                         2022.3.15
+requests                      2.27.1
+requests-file                 1.5.1
+rope                          0.22.0
+rsa                           4.7.2
+Rtree                         0.9.7
+ruamel-yaml-conda             0.15.100
+s3transfer                    0.5.0
+scikit-image                  0.19.2
+scikit-learn                  1.0.2
+scikit-learn-intelex          2021.20220215.212715
+scipy                         1.7.3
+Scrapy                        2.6.1
+seaborn                       0.11.2
+SecretStorage                 3.3.1
+Send2Trash                    1.8.0
+service-identity              18.1.0
+setuptools                    61.2.0
+sip                           4.19.13
+six                           1.16.0
+smart-open                    5.1.0
+sniffio                       1.2.0
+snowballstemmer               2.2.0
+sortedcollections             2.1.0
+sortedcontainers              2.4.0
+soupsieve                     2.3.1
+Sphinx                        4.4.0
+sphinxcontrib-applehelp       1.0.2
+sphinxcontrib-devhelp         1.0.2
+sphinxcontrib-htmlhelp        2.0.0
+sphinxcontrib-jsmath          1.0.1
+sphinxcontrib-qthelp          1.0.3
+sphinxcontrib-serializinghtml 1.1.5
+spyder                        5.1.5
+spyder-kernels                2.1.3
+SQLAlchemy                    1.4.32
+stack-data                    0.2.0
+statsmodels                   0.13.2
+sympy                         1.10.1
+tables                        3.6.1
+tabulate                      0.8.9
+TBB                           0.2
+tblib                         1.7.0
+tenacity                      8.0.1
+terminado                     0.13.1
+testpath                      0.5.0
+text-unidecode                1.3
+textdistance                  4.2.1
+threadpoolctl                 2.2.0
+three-merge                   0.1.1
+tifffile                      2021.7.2
+tinycss                       0.4
+tldextract                    3.2.0
+toml                          0.10.2
+tomli                         1.2.2
+toolz                         0.11.2
+tornado                       6.1
+tqdm                          4.64.0
+traitlets                     5.1.1
+Twisted                       22.2.0
+typed-ast                     1.4.3
+typing_extensions             4.1.1
+ujson                         5.1.0
+Unidecode                     1.2.0
+urllib3                       1.26.9
+w3lib                         1.21.0
+watchdog                      2.1.6
+wcwidth                       0.2.5
+webencodings                  0.5.1
+websocket-client              0.58.0
+Werkzeug                      2.0.3
+wheel                         0.37.1
+widgetsnbextension            3.5.2
+wrapt                         1.12.1
+wurlitzer                     3.0.2
+xarray                        0.20.1
+xlrd                          2.0.1
+XlsxWriter                    3.0.3
+yapf                          0.31.0
+yarl                          1.6.3
+zict                          2.0.0
+zipp                          3.7.0
+zope.interface                5.4.0
++ set +x
+------------------------------------------------------------
+Time and disk space used when installation was complete:
++ date
+2024年 02月 27日 星期二 14:43:51 CST
++ df -h .
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/nvme0n1p2  1.8T   76G  1.7T   5% /
++ df -BM .
+Filesystem     1M-blocks   Used Available Use% Mounted on
+/dev/nvme0n1p2  1876181M 77589M  1703216M   5% /
++ echo ----------------------------------------------------------------------
+----------------------------------------------------------------------
++ echo 'Output of script p4-environment-info.sh'
+Output of script p4-environment-info.sh
++ echo ----------------------------------------------------------------------
+----------------------------------------------------------------------
++ /home/guang/zsy/p4/p4-guide/bin/p4-environment-info.sh
+p4-environment-info version 1
+
+$ uname -a
+Linux guang 5.15.0-92-generic #102~20.04.1-Ubuntu SMP Mon Jan 15 13:09:14 UTC 2024 x86_64 x86_64 x86_64 GNU/Linux
+
+ID=ubuntu
+VERSION_ID=20.04
+
+$ which gcc
+/usr/bin/gcc
+$ gcc --version
+gcc (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0
+Copyright (C) 2019 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+
+$ which g++
+/usr/bin/g++
+$ g++ --version
+g++ (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0
+Copyright (C) 2019 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+
+$ which make
+/usr/bin/make
+$ make --version
+GNU Make 4.2.1
+Built for x86_64-pc-linux-gnu
+Copyright (C) 1988-2016 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+$ which cmake
+[ No such program found in your PATH -- it might still be elsewhere on the system ]
+
+$ which m4
+/usr/bin/m4
+$ m4 --version
+m4 (GNU M4) 1.4.18
+Copyright (C) 2016 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Written by Rene' Seindal.
+
+$ which autoconf
+/usr/bin/autoconf
+$ autoconf --version
+autoconf (GNU Autoconf) 2.69
+Copyright (C) 2012 Free Software Foundation, Inc.
+License GPLv3+/Autoconf: GNU GPL version 3 or later
+<http://gnu.org/licenses/gpl.html>, <http://gnu.org/licenses/exceptions.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Written by David J. MacKenzie and Akim Demaille.
+
+$ which automake
+/usr/bin/automake
+$ automake --version
+automake (GNU automake) 1.16.1
+Copyright (C) 2018 Free Software Foundation, Inc.
+License GPLv2+: GNU GPL version 2 or later <https://gnu.org/licenses/gpl-2.0.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Written by Tom Tromey <tromey@redhat.com>
+       and Alexandre Duret-Lutz <adl@gnu.org>.
+
+$ which as
+/usr/bin/as
+$ as --version
+GNU assembler (GNU Binutils for Ubuntu) 2.34
+Copyright (C) 2020 Free Software Foundation, Inc.
+This program is free software; you may redistribute it under the terms of
+the GNU General Public License version 3 or later.
+This program has absolutely no warranty.
+This assembler was configured for a target of `x86_64-linux-gnu'.
+
+$ which bison
+[ No such program found in your PATH -- it might still be elsewhere on the system ]
+
+$ which flex
+/usr/bin/flex
+$ flex --version
+flex 2.6.4
+
+$ which llvm-config
+/usr/bin/llvm-config
+$ llvm-config --version
+10.0.0
+
+$ which python
+/opt/anaconda3/bin/python
+$ python --version
+Python 3.9.12
+
+$ which pip
+/opt/anaconda3/bin/pip
+$ pip --version
+pip 21.2.4 from /opt/anaconda3/lib/python3.9/site-packages/pip (python 3.9)
+$ pip list
+Package                       Version
+----------------------------- --------------------
+aiohttp                       3.8.1
+aiosignal                     1.2.0
+alabaster                     0.7.12
+anaconda-client               1.9.0
+anaconda-navigator            2.1.4
+anaconda-project              0.10.2
+anyio                         3.5.0
+appdirs                       1.4.4
+argon2-cffi                   21.3.0
+argon2-cffi-bindings          21.2.0
+arrow                         1.2.2
+astroid                       2.6.6
+astropy                       5.0.4
+asttokens                     2.0.5
+async-timeout                 4.0.1
+atomicwrites                  1.4.0
+attrs                         21.4.0
+Automat                       20.2.0
+autopep8                      1.6.0
+Babel                         2.9.1
+backcall                      0.2.0
+backports.functools-lru-cache 1.6.4
+backports.tempfile            1.0
+backports.weakref             1.0.post1
+bcrypt                        3.2.0
+beautifulsoup4                4.11.1
+binaryornot                   0.4.4
+bitarray                      2.4.1
+bkcharts                      0.2
+black                         19.10b0
+bleach                        4.1.0
+bokeh                         2.4.2
+boto3                         1.21.32
+botocore                      1.24.32
+Bottleneck                    1.3.4
+brotlipy                      0.7.0
+cachetools                    4.2.2
+certifi                       2021.10.8
+cffi                          1.15.0
+chardet                       4.0.0
+charset-normalizer            2.0.4
+click                         8.0.4
+cloudpickle                   2.0.0
+clyent                        1.2.2
+colorama                      0.4.4
+colorcet                      2.0.6
+conda                         4.12.0
+conda-build                   3.21.8
+conda-content-trust           0+unknown
+conda-pack                    0.6.0
+conda-package-handling        1.8.1
+conda-repo-cli                1.0.4
+conda-token                   0.3.0
+conda-verify                  3.4.2
+constantly                    15.1.0
+cookiecutter                  1.7.3
+cryptography                  3.4.8
+cssselect                     1.1.0
+cycler                        0.11.0
+Cython                        0.29.28
+cytoolz                       0.11.0
+daal4py                       2021.5.0
+dask                          2022.2.1
+datashader                    0.13.0
+datashape                     0.5.4
+debugpy                       1.5.1
+decorator                     5.1.1
+defusedxml                    0.7.1
+diff-match-patch              20200713
+distributed                   2022.2.1
+docutils                      0.17.1
+entrypoints                   0.4
+et-xmlfile                    1.1.0
+executing                     0.8.3
+fastjsonschema                2.15.1
+filelock                      3.6.0
+flake8                        3.9.2
+Flask                         1.1.2
+fonttools                     4.25.0
+frozenlist                    1.2.0
+fsspec                        2022.2.0
+future                        0.18.2
+gensim                        4.1.2
+glob2                         0.7
+gmpy2                         2.1.2
+google-api-core               1.25.1
+google-auth                   1.33.0
+google-cloud-core             1.7.1
+google-cloud-storage          1.31.0
+google-crc32c                 1.1.2
+google-resumable-media        1.3.1
+googleapis-common-protos      1.53.0
+greenlet                      1.1.1
+grpcio                        1.42.0
+h5py                          3.6.0
+HeapDict                      1.0.1
+holoviews                     1.14.8
+hvplot                        0.7.3
+hyperlink                     21.0.0
+idna                          3.3
+imagecodecs                   2021.8.26
+imageio                       2.9.0
+imagesize                     1.3.0
+importlib-metadata            4.11.3
+incremental                   21.3.0
+inflection                    0.5.1
+iniconfig                     1.1.1
+intake                        0.6.5
+intervaltree                  3.1.0
+ipykernel                     6.9.1
+ipython                       8.2.0
+ipython-genutils              0.2.0
+ipywidgets                    7.6.5
+isort                         5.9.3
+itemadapter                   0.3.0
+itemloaders                   1.0.4
+itsdangerous                  2.0.1
+jdcal                         1.4.1
+jedi                          0.18.1
+jeepney                       0.7.1
+Jinja2                        2.11.3
+jinja2-time                   0.2.0
+jmespath                      0.10.0
+joblib                        1.1.0
+json5                         0.9.6
+jsonschema                    4.4.0
+jupyter                       1.0.0
+jupyter-client                6.1.12
+jupyter-console               6.4.0
+jupyter-core                  4.9.2
+jupyter-server                1.13.5
+jupyterlab                    3.3.2
+jupyterlab-pygments           0.1.2
+jupyterlab-server             2.10.3
+jupyterlab-widgets            1.0.0
+keyring                       23.4.0
+kiwisolver                    1.3.2
+lazy-object-proxy             1.6.0
+libarchive-c                  2.9
+llvmlite                      0.38.0
+locket                        0.2.1
+lxml                          4.8.0
+Markdown                      3.3.4
+MarkupSafe                    2.0.1
+matplotlib                    3.5.1
+matplotlib-inline             0.1.2
+mccabe                        0.6.1
+mistune                       0.8.4
+mkl-fft                       1.3.1
+mkl-random                    1.2.2
+mkl-service                   2.4.0
+mock                          4.0.3
+mpmath                        1.2.1
+msgpack                       1.0.2
+multidict                     5.2.0
+multipledispatch              0.6.0
+munkres                       1.1.4
+mypy-extensions               0.4.3
+navigator-updater             0.2.1
+nbclassic                     0.3.5
+nbclient                      0.5.13
+nbconvert                     6.4.4
+nbformat                      5.3.0
+nest-asyncio                  1.5.5
+networkx                      2.7.1
+nltk                          3.7
+nose                          1.3.7
+notebook                      6.4.8
+numba                         0.55.1
+numexpr                       2.8.1
+numpy                         1.21.5
+numpydoc                      1.2
+olefile                       0.46
+openpyxl                      3.0.9
+packaging                     21.3
+pandas                        1.4.2
+pandocfilters                 1.5.0
+panel                         0.13.0
+param                         1.12.0
+parsel                        1.6.0
+parso                         0.8.3
+partd                         1.2.0
+pathspec                      0.7.0
+patsy                         0.5.2
+pep8                          1.7.1
+pexpect                       4.8.0
+pickleshare                   0.7.5
+Pillow                        9.0.1
+pip                           21.2.4
+pkginfo                       1.8.2
+plotly                        5.6.0
+pluggy                        1.0.0
+poyo                          0.5.0
+prometheus-client             0.13.1
+prompt-toolkit                3.0.20
+Protego                       0.1.16
+protobuf                      3.19.1
+psutil                        5.8.0
+ptyprocess                    0.7.0
+pure-eval                     0.2.2
+py                            1.11.0
+pyasn1                        0.4.8
+pyasn1-modules                0.2.8
+pycodestyle                   2.7.0
+pycosat                       0.6.3
+pycparser                     2.21
+pyct                          0.4.6
+pycurl                        7.44.1
+PyDispatcher                  2.0.5
+pydocstyle                    6.1.1
+pyerfa                        2.0.0
+pyflakes                      2.3.1
+Pygments                      2.11.2
+PyHamcrest                    2.0.2
+PyJWT                         2.1.0
+pylint                        2.9.6
+pyls-spyder                   0.4.0
+pyodbc                        4.0.32
+pyOpenSSL                     21.0.0
+pyparsing                     3.0.4
+pyrsistent                    0.18.0
+PySocks                       1.7.1
+pytest                        7.1.1
+python-dateutil               2.8.2
+python-lsp-black              1.0.0
+python-lsp-jsonrpc            1.0.0
+python-lsp-server             1.2.4
+python-slugify                5.0.2
+python-snappy                 0.6.0
+pytz                          2021.3
+pyviz-comms                   2.0.2
+PyWavelets                    1.3.0
+pyxdg                         0.27
+PyYAML                        6.0
+pyzmq                         22.3.0
+QDarkStyle                    3.0.2
+qstylizer                     0.1.10
+QtAwesome                     1.0.3
+qtconsole                     5.3.0
+QtPy                          2.0.1
+queuelib                      1.5.0
+regex                         2022.3.15
+requests                      2.27.1
+requests-file                 1.5.1
+rope                          0.22.0
+rsa                           4.7.2
+Rtree                         0.9.7
+ruamel-yaml-conda             0.15.100
+s3transfer                    0.5.0
+scikit-image                  0.19.2
+scikit-learn                  1.0.2
+scikit-learn-intelex          2021.20220215.212715
+scipy                         1.7.3
+Scrapy                        2.6.1
+seaborn                       0.11.2
+SecretStorage                 3.3.1
+Send2Trash                    1.8.0
+service-identity              18.1.0
+setuptools                    61.2.0
+sip                           4.19.13
+six                           1.16.0
+smart-open                    5.1.0
+sniffio                       1.2.0
+snowballstemmer               2.2.0
+sortedcollections             2.1.0
+sortedcontainers              2.4.0
+soupsieve                     2.3.1
+Sphinx                        4.4.0
+sphinxcontrib-applehelp       1.0.2
+sphinxcontrib-devhelp         1.0.2
+sphinxcontrib-htmlhelp        2.0.0
+sphinxcontrib-jsmath          1.0.1
+sphinxcontrib-qthelp          1.0.3
+sphinxcontrib-serializinghtml 1.1.5
+spyder                        5.1.5
+spyder-kernels                2.1.3
+SQLAlchemy                    1.4.32
+stack-data                    0.2.0
+statsmodels                   0.13.2
+sympy                         1.10.1
+tables                        3.6.1
+tabulate                      0.8.9
+TBB                           0.2
+tblib                         1.7.0
+tenacity                      8.0.1
+terminado                     0.13.1
+testpath                      0.5.0
+text-unidecode                1.3
+textdistance                  4.2.1
+threadpoolctl                 2.2.0
+three-merge                   0.1.1
+tifffile                      2021.7.2
+tinycss                       0.4
+tldextract                    3.2.0
+toml                          0.10.2
+tomli                         1.2.2
+toolz                         0.11.2
+tornado                       6.1
+tqdm                          4.64.0
+traitlets                     5.1.1
+Twisted                       22.2.0
+typed-ast                     1.4.3
+typing_extensions             4.1.1
+ujson                         5.1.0
+Unidecode                     1.2.0
+urllib3                       1.26.9
+w3lib                         1.21.0
+watchdog                      2.1.6
+wcwidth                       0.2.5
+webencodings                  0.5.1
+websocket-client              0.58.0
+Werkzeug                      2.0.3
+wheel                         0.37.1
+widgetsnbextension            3.5.2
+wrapt                         1.12.1
+wurlitzer                     3.0.2
+xarray                        0.20.1
+xlrd                          2.0.1
+XlsxWriter                    3.0.3
+yapf                          0.31.0
+yarl                          1.6.3
+zict                          2.0.0
+zipp                          3.7.0
+zope.interface                5.4.0
+
+$ which python3
+/opt/anaconda3/bin/python3
+$ python3 --version
+Python 3.9.12
+
+$ which pip3
+/opt/anaconda3/bin/pip3
+$ pip3 --version
+pip 21.2.4 from /opt/anaconda3/lib/python3.9/site-packages/pip (python 3.9)
+$ pip3 list
+Package                       Version
+----------------------------- --------------------
+aiohttp                       3.8.1
+aiosignal                     1.2.0
+alabaster                     0.7.12
+anaconda-client               1.9.0
+anaconda-navigator            2.1.4
+anaconda-project              0.10.2
+anyio                         3.5.0
+appdirs                       1.4.4
+argon2-cffi                   21.3.0
+argon2-cffi-bindings          21.2.0
+arrow                         1.2.2
+astroid                       2.6.6
+astropy                       5.0.4
+asttokens                     2.0.5
+async-timeout                 4.0.1
+atomicwrites                  1.4.0
+attrs                         21.4.0
+Automat                       20.2.0
+autopep8                      1.6.0
+Babel                         2.9.1
+backcall                      0.2.0
+backports.functools-lru-cache 1.6.4
+backports.tempfile            1.0
+backports.weakref             1.0.post1
+bcrypt                        3.2.0
+beautifulsoup4                4.11.1
+binaryornot                   0.4.4
+bitarray                      2.4.1
+bkcharts                      0.2
+black                         19.10b0
+bleach                        4.1.0
+bokeh                         2.4.2
+boto3                         1.21.32
+botocore                      1.24.32
+Bottleneck                    1.3.4
+brotlipy                      0.7.0
+cachetools                    4.2.2
+certifi                       2021.10.8
+cffi                          1.15.0
+chardet                       4.0.0
+charset-normalizer            2.0.4
+click                         8.0.4
+cloudpickle                   2.0.0
+clyent                        1.2.2
+colorama                      0.4.4
+colorcet                      2.0.6
+conda                         4.12.0
+conda-build                   3.21.8
+conda-content-trust           0+unknown
+conda-pack                    0.6.0
+conda-package-handling        1.8.1
+conda-repo-cli                1.0.4
+conda-token                   0.3.0
+conda-verify                  3.4.2
+constantly                    15.1.0
+cookiecutter                  1.7.3
+cryptography                  3.4.8
+cssselect                     1.1.0
+cycler                        0.11.0
+Cython                        0.29.28
+cytoolz                       0.11.0
+daal4py                       2021.5.0
+dask                          2022.2.1
+datashader                    0.13.0
+datashape                     0.5.4
+debugpy                       1.5.1
+decorator                     5.1.1
+defusedxml                    0.7.1
+diff-match-patch              20200713
+distributed                   2022.2.1
+docutils                      0.17.1
+entrypoints                   0.4
+et-xmlfile                    1.1.0
+executing                     0.8.3
+fastjsonschema                2.15.1
+filelock                      3.6.0
+flake8                        3.9.2
+Flask                         1.1.2
+fonttools                     4.25.0
+frozenlist                    1.2.0
+fsspec                        2022.2.0
+future                        0.18.2
+gensim                        4.1.2
+glob2                         0.7
+gmpy2                         2.1.2
+google-api-core               1.25.1
+google-auth                   1.33.0
+google-cloud-core             1.7.1
+google-cloud-storage          1.31.0
+google-crc32c                 1.1.2
+google-resumable-media        1.3.1
+googleapis-common-protos      1.53.0
+greenlet                      1.1.1
+grpcio                        1.42.0
+h5py                          3.6.0
+HeapDict                      1.0.1
+holoviews                     1.14.8
+hvplot                        0.7.3
+hyperlink                     21.0.0
+idna                          3.3
+imagecodecs                   2021.8.26
+imageio                       2.9.0
+imagesize                     1.3.0
+importlib-metadata            4.11.3
+incremental                   21.3.0
+inflection                    0.5.1
+iniconfig                     1.1.1
+intake                        0.6.5
+intervaltree                  3.1.0
+ipykernel                     6.9.1
+ipython                       8.2.0
+ipython-genutils              0.2.0
+ipywidgets                    7.6.5
+isort                         5.9.3
+itemadapter                   0.3.0
+itemloaders                   1.0.4
+itsdangerous                  2.0.1
+jdcal                         1.4.1
+jedi                          0.18.1
+jeepney                       0.7.1
+Jinja2                        2.11.3
+jinja2-time                   0.2.0
+jmespath                      0.10.0
+joblib                        1.1.0
+json5                         0.9.6
+jsonschema                    4.4.0
+jupyter                       1.0.0
+jupyter-client                6.1.12
+jupyter-console               6.4.0
+jupyter-core                  4.9.2
+jupyter-server                1.13.5
+jupyterlab                    3.3.2
+jupyterlab-pygments           0.1.2
+jupyterlab-server             2.10.3
+jupyterlab-widgets            1.0.0
+keyring                       23.4.0
+kiwisolver                    1.3.2
+lazy-object-proxy             1.6.0
+libarchive-c                  2.9
+llvmlite                      0.38.0
+locket                        0.2.1
+lxml                          4.8.0
+Markdown                      3.3.4
+MarkupSafe                    2.0.1
+matplotlib                    3.5.1
+matplotlib-inline             0.1.2
+mccabe                        0.6.1
+mistune                       0.8.4
+mkl-fft                       1.3.1
+mkl-random                    1.2.2
+mkl-service                   2.4.0
+mock                          4.0.3
+mpmath                        1.2.1
+msgpack                       1.0.2
+multidict                     5.2.0
+multipledispatch              0.6.0
+munkres                       1.1.4
+mypy-extensions               0.4.3
+navigator-updater             0.2.1
+nbclassic                     0.3.5
+nbclient                      0.5.13
+nbconvert                     6.4.4
+nbformat                      5.3.0
+nest-asyncio                  1.5.5
+networkx                      2.7.1
+nltk                          3.7
+nose                          1.3.7
+notebook                      6.4.8
+numba                         0.55.1
+numexpr                       2.8.1
+numpy                         1.21.5
+numpydoc                      1.2
+olefile                       0.46
+openpyxl                      3.0.9
+packaging                     21.3
+pandas                        1.4.2
+pandocfilters                 1.5.0
+panel                         0.13.0
+param                         1.12.0
+parsel                        1.6.0
+parso                         0.8.3
+partd                         1.2.0
+pathspec                      0.7.0
+patsy                         0.5.2
+pep8                          1.7.1
+pexpect                       4.8.0
+pickleshare                   0.7.5
+Pillow                        9.0.1
+pip                           21.2.4
+pkginfo                       1.8.2
+plotly                        5.6.0
+pluggy                        1.0.0
+poyo                          0.5.0
+prometheus-client             0.13.1
+prompt-toolkit                3.0.20
+Protego                       0.1.16
+protobuf                      3.19.1
+psutil                        5.8.0
+ptyprocess                    0.7.0
+pure-eval                     0.2.2
+py                            1.11.0
+pyasn1                        0.4.8
+pyasn1-modules                0.2.8
+pycodestyle                   2.7.0
+pycosat                       0.6.3
+pycparser                     2.21
+pyct                          0.4.6
+pycurl                        7.44.1
+PyDispatcher                  2.0.5
+pydocstyle                    6.1.1
+pyerfa                        2.0.0
+pyflakes                      2.3.1
+Pygments                      2.11.2
+PyHamcrest                    2.0.2
+PyJWT                         2.1.0
+pylint                        2.9.6
+pyls-spyder                   0.4.0
+pyodbc                        4.0.32
+pyOpenSSL                     21.0.0
+pyparsing                     3.0.4
+pyrsistent                    0.18.0
+PySocks                       1.7.1
+pytest                        7.1.1
+python-dateutil               2.8.2
+python-lsp-black              1.0.0
+python-lsp-jsonrpc            1.0.0
+python-lsp-server             1.2.4
+python-slugify                5.0.2
+python-snappy                 0.6.0
+pytz                          2021.3
+pyviz-comms                   2.0.2
+PyWavelets                    1.3.0
+pyxdg                         0.27
+PyYAML                        6.0
+pyzmq                         22.3.0
+QDarkStyle                    3.0.2
+qstylizer                     0.1.10
+QtAwesome                     1.0.3
+qtconsole                     5.3.0
+QtPy                          2.0.1
+queuelib                      1.5.0
+regex                         2022.3.15
+requests                      2.27.1
+requests-file                 1.5.1
+rope                          0.22.0
+rsa                           4.7.2
+Rtree                         0.9.7
+ruamel-yaml-conda             0.15.100
+s3transfer                    0.5.0
+scikit-image                  0.19.2
+scikit-learn                  1.0.2
+scikit-learn-intelex          2021.20220215.212715
+scipy                         1.7.3
+Scrapy                        2.6.1
+seaborn                       0.11.2
+SecretStorage                 3.3.1
+Send2Trash                    1.8.0
+service-identity              18.1.0
+setuptools                    61.2.0
+sip                           4.19.13
+six                           1.16.0
+smart-open                    5.1.0
+sniffio                       1.2.0
+snowballstemmer               2.2.0
+sortedcollections             2.1.0
+sortedcontainers              2.4.0
+soupsieve                     2.3.1
+Sphinx                        4.4.0
+sphinxcontrib-applehelp       1.0.2
+sphinxcontrib-devhelp         1.0.2
+sphinxcontrib-htmlhelp        2.0.0
+sphinxcontrib-jsmath          1.0.1
+sphinxcontrib-qthelp          1.0.3
+sphinxcontrib-serializinghtml 1.1.5
+spyder                        5.1.5
+spyder-kernels                2.1.3
+SQLAlchemy                    1.4.32
+stack-data                    0.2.0
+statsmodels                   0.13.2
+sympy                         1.10.1
+tables                        3.6.1
+tabulate                      0.8.9
+TBB                           0.2
+tblib                         1.7.0
+tenacity                      8.0.1
+terminado                     0.13.1
+testpath                      0.5.0
+text-unidecode                1.3
+textdistance                  4.2.1
+threadpoolctl                 2.2.0
+three-merge                   0.1.1
+tifffile                      2021.7.2
+tinycss                       0.4
+tldextract                    3.2.0
+toml                          0.10.2
+tomli                         1.2.2
+toolz                         0.11.2
+tornado                       6.1
+tqdm                          4.64.0
+traitlets                     5.1.1
+Twisted                       22.2.0
+typed-ast                     1.4.3
+typing_extensions             4.1.1
+ujson                         5.1.0
+Unidecode                     1.2.0
+urllib3                       1.26.9
+w3lib                         1.21.0
+watchdog                      2.1.6
+wcwidth                       0.2.5
+webencodings                  0.5.1
+websocket-client              0.58.0
+Werkzeug                      2.0.3
+wheel                         0.37.1
+widgetsnbextension            3.5.2
+wrapt                         1.12.1
+wurlitzer                     3.0.2
+xarray                        0.20.1
+xlrd                          2.0.1
+XlsxWriter                    3.0.3
+yapf                          0.31.0
+yarl                          1.6.3
+zict                          2.0.0
+zipp                          3.7.0
+zope.interface                5.4.0
+
+$ which libtool
+[ No such program found in your PATH -- it might still be elsewhere on the system ]
+
+$ which pkg-config
+/usr/bin/pkg-config
+$ pkg-config --version
+0.29.1
+
+$ which mn
+/usr/local/bin/mn
+$ mn --version
+2.3.1b4
+
+$ which protoc
+/opt/anaconda3/bin/protoc
+$ protoc --version
+libprotoc 3.19.1
+
+$ which thrift
+/usr/bin/thrift
+$ thrift --version
+Thrift version 0.13.0
+
+$ which simple_switch
+/usr/bin/simple_switch
+$ simple_switch --version
+1.15.0-6ee70b5e
+
+$ which simple_switch_grpc
+/usr/bin/simple_switch_grpc
+$ simple_switch_grpc --version
+1.15.0-6ee70b5e
+
+$ which simple_switch_CLI
+/usr/bin/simple_switch_CLI
+
+$ which p4c
+/usr/bin/p4c
+$ p4c --version
+p4c 1.2.4.2 (SHA: 624c6be80 BUILD: RELEASE)
+
+$ find /usr | grep p4runtime | sort | xargs ls -ld
+-rw-r--r-- 1 root root  50835 8月  16  2023 /usr/include/p4/v1/p4runtime.grpc.pb.h
+-rw-r--r-- 1 root root 703138 8月  16  2023 /usr/include/p4/v1/p4runtime.pb.h
+-rw-r--r-- 1 root root   6447 8月  16  2023 /usr/lib/python3/dist-packages/p4/v1/p4runtime_pb2_grpc.py
+-rw-r--r-- 1 root root 158512 8月  16  2023 /usr/lib/python3/dist-packages/p4/v1/p4runtime_pb2.py
+-rw-r--r-- 1 root root  54475 2月  27 14:41 /usr/lib/python3/dist-packages/p4/v1/__pycache__/p4runtime_pb2.cpython-38.pyc
+-rw-r--r-- 1 root root   4403 2月  27 14:41 /usr/lib/python3/dist-packages/p4/v1/__pycache__/p4runtime_pb2_grpc.cpython-38.pyc
+
+$ find /usr/local/lib | grep grpc | sort | xargs ls -ld
+drwxr-sr-x 8 root staff     4096 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc
+drwxr-sr-x 3 root staff     4096 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/aio
+-rw-r--r-- 1 root staff     7561 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/aio/_base_call.py
+-rw-r--r-- 1 root staff    13134 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/aio/_base_channel.py
+-rw-r--r-- 1 root staff    12062 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/aio/_base_server.py
+-rw-r--r-- 1 root staff    25271 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/aio/_call.py
+-rw-r--r-- 1 root staff    20865 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/aio/_channel.py
+-rw-r--r-- 1 root staff     3160 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/aio/__init__.py
+-rw-r--r-- 1 root staff    41180 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/aio/_interceptor.py
+-rw-r--r-- 1 root staff     4570 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/aio/_metadata.py
+drwxr-sr-x 2 root staff     4096 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/aio/__pycache__
+-rw-r--r-- 1 root staff     8093 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/aio/__pycache__/_base_call.cpython-38.pyc
+-rw-r--r-- 1 root staff    13204 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/aio/__pycache__/_base_channel.cpython-38.pyc
+-rw-r--r-- 1 root staff    13945 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/aio/__pycache__/_base_server.cpython-38.pyc
+-rw-r--r-- 1 root staff    20946 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/aio/__pycache__/_call.cpython-38.pyc
+-rw-r--r-- 1 root staff    13179 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/aio/__pycache__/_channel.cpython-38.pyc
+-rw-r--r-- 1 root staff     2066 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/aio/__pycache__/__init__.cpython-38.pyc
+-rw-r--r-- 1 root staff    33300 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/aio/__pycache__/_interceptor.cpython-38.pyc
+-rw-r--r-- 1 root staff     4713 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/aio/__pycache__/_metadata.cpython-38.pyc
+-rw-r--r-- 1 root staff     8031 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/aio/__pycache__/_server.cpython-38.pyc
+-rw-r--r-- 1 root staff      899 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/aio/__pycache__/_typing.cpython-38.pyc
+-rw-r--r-- 1 root staff      446 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/aio/__pycache__/_utils.cpython-38.pyc
+-rw-r--r-- 1 root staff     8630 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/aio/_server.py
+-rw-r--r-- 1 root staff     1378 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/aio/_typing.py
+-rw-r--r-- 1 root staff      821 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/aio/_utils.py
+-rw-r--r-- 1 root staff     2635 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/_auth.py
+drwxr-sr-x 3 root staff     4096 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/beta
+-rw-r--r-- 1 root staff    27023 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/beta/_client_adaptations.py
+-rw-r--r-- 1 root staff    12058 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/beta/implementations.py
+-rw-r--r-- 1 root staff      577 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/beta/__init__.py
+-rw-r--r-- 1 root staff     6082 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/beta/interfaces.py
+-rw-r--r-- 1 root staff     1638 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/beta/_metadata.py
+drwxr-sr-x 2 root staff     4096 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/beta/__pycache__
+-rw-r--r-- 1 root staff    18077 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/beta/__pycache__/_client_adaptations.cpython-38.pyc
+-rw-r--r-- 1 root staff    10309 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/beta/__pycache__/implementations.cpython-38.pyc
+-rw-r--r-- 1 root staff      145 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/beta/__pycache__/__init__.cpython-38.pyc
+-rw-r--r-- 1 root staff     6426 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/beta/__pycache__/interfaces.cpython-38.pyc
+-rw-r--r-- 1 root staff     1363 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/beta/__pycache__/_metadata.cpython-38.pyc
+-rw-r--r-- 1 root staff    12122 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/beta/__pycache__/_server_adaptations.cpython-38.pyc
+-rw-r--r-- 1 root staff     4462 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/beta/__pycache__/utilities.cpython-38.pyc
+-rw-r--r-- 1 root staff    14611 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/beta/_server_adaptations.py
+-rw-r--r-- 1 root staff     5005 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/beta/utilities.py
+-rw-r--r-- 1 root staff    78324 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/_channel.py
+-rw-r--r-- 1 root staff     6784 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/_common.py
+-rw-r--r-- 1 root staff     1983 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/_compression.py
+drwxr-sr-x 5 root staff     4096 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/_cython
+drwxr-sr-x 2 root staff     4096 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/_cython/_credentials
+-rw-r--r-- 1 root staff   264440 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/_cython/_credentials/roots.pem
+drwxr-sr-x 3 root staff     4096 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/_cython/_cygrpc
+-rwxr-xr-x 1 root staff 12709256 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/_cython/cygrpc.cpython-38-x86_64-linux-gnu.so
+-rw-r--r-- 1 root staff      577 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/_cython/_cygrpc/__init__.py
+drwxr-sr-x 2 root staff     4096 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/_cython/_cygrpc/__pycache__
+-rw-r--r-- 1 root staff      156 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/_cython/_cygrpc/__pycache__/__init__.cpython-38.pyc
+-rw-r--r-- 1 root staff      577 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/_cython/__init__.py
+drwxr-sr-x 2 root staff     4096 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/_cython/__pycache__
+-rw-r--r-- 1 root staff      148 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/_cython/__pycache__/__init__.cpython-38.pyc
+drwxr-sr-x 4 root staff     4096 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/experimental
+drwxr-sr-x 3 root staff     4096 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/experimental/aio
+-rw-r--r-- 1 root staff      660 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/experimental/aio/__init__.py
+drwxr-sr-x 2 root staff     4096 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/experimental/aio/__pycache__
+-rw-r--r-- 1 root staff      248 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/experimental/aio/__pycache__/__init__.cpython-38.pyc
+-rw-r--r-- 1 root staff      973 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/experimental/gevent.py
+-rw-r--r-- 1 root staff     4103 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/experimental/__init__.py
+drwxr-sr-x 2 root staff     4096 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/experimental/__pycache__
+-rw-r--r-- 1 root staff      641 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/experimental/__pycache__/gevent.cpython-38.pyc
+-rw-r--r-- 1 root staff     3400 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/experimental/__pycache__/__init__.cpython-38.pyc
+-rw-r--r-- 1 root staff     1488 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/experimental/__pycache__/session_cache.cpython-38.pyc
+-rw-r--r-- 1 root staff     1533 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/experimental/session_cache.py
+drwxr-sr-x 6 root staff     4096 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework
+drwxr-sr-x 3 root staff     4096 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/common
+-rw-r--r-- 1 root staff      988 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/common/cardinality.py
+-rw-r--r-- 1 root staff      577 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/common/__init__.py
+drwxr-sr-x 2 root staff     4096 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/common/__pycache__
+-rw-r--r-- 1 root staff      722 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/common/__pycache__/cardinality.cpython-38.pyc
+-rw-r--r-- 1 root staff      157 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/common/__pycache__/__init__.cpython-38.pyc
+-rw-r--r-- 1 root staff      552 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/common/__pycache__/style.cpython-38.pyc
+-rw-r--r-- 1 root staff      824 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/common/style.py
+drwxr-sr-x 3 root staff     4096 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation
+-rw-r--r-- 1 root staff      878 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/abandonment.py
+-rw-r--r-- 1 root staff     3151 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/callable_util.py
+-rw-r--r-- 1 root staff     8373 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/future.py
+-rw-r--r-- 1 root staff      577 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/__init__.py
+-rw-r--r-- 1 root staff     2248 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/logging_pool.py
+drwxr-sr-x 2 root staff     4096 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/__pycache__
+-rw-r--r-- 1 root staff      609 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/__pycache__/abandonment.cpython-38.pyc
+-rw-r--r-- 1 root staff     3167 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/__pycache__/callable_util.cpython-38.pyc
+-rw-r--r-- 1 root staff     7370 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/__pycache__/future.cpython-38.pyc
+-rw-r--r-- 1 root staff      161 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/__pycache__/__init__.cpython-38.pyc
+-rw-r--r-- 1 root staff     2494 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/__pycache__/logging_pool.cpython-38.pyc
+-rw-r--r-- 1 root staff     1258 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/__pycache__/stream.cpython-38.pyc
+-rw-r--r-- 1 root staff     4518 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/__pycache__/stream_util.cpython-38.pyc
+-rw-r--r-- 1 root staff     1377 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/stream.py
+-rw-r--r-- 1 root staff     4772 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/foundation/stream_util.py
+-rw-r--r-- 1 root staff      577 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/__init__.py
+drwxr-sr-x 5 root staff     4096 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces
+drwxr-sr-x 3 root staff     4096 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/base
+-rw-r--r-- 1 root staff    12233 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/base/base.py
+-rw-r--r-- 1 root staff      577 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/base/__init__.py
+drwxr-sr-x 2 root staff     4096 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/base/__pycache__
+-rw-r--r-- 1 root staff    13406 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/base/__pycache__/base.cpython-38.pyc
+-rw-r--r-- 1 root staff      166 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/base/__pycache__/__init__.cpython-38.pyc
+-rw-r--r-- 1 root staff     1956 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/base/__pycache__/utilities.cpython-38.pyc
+-rw-r--r-- 1 root staff     2361 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/base/utilities.py
+drwxr-sr-x 3 root staff     4096 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/face
+-rw-r--r-- 1 root staff    39700 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/face/face.py
+-rw-r--r-- 1 root staff      577 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/face/__init__.py
+drwxr-sr-x 2 root staff     4096 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/face/__pycache__
+-rw-r--r-- 1 root staff    40334 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/face/__pycache__/face.cpython-38.pyc
+-rw-r--r-- 1 root staff      166 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/face/__pycache__/__init__.cpython-38.pyc
+-rw-r--r-- 1 root staff     5552 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/face/__pycache__/utilities.cpython-38.pyc
+-rw-r--r-- 1 root staff     6781 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/face/utilities.py
+-rw-r--r-- 1 root staff      577 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/__init__.py
+drwxr-sr-x 2 root staff     4096 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/__pycache__
+-rw-r--r-- 1 root staff      161 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/interfaces/__pycache__/__init__.cpython-38.pyc
+drwxr-sr-x 2 root staff     4096 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/__pycache__
+-rw-r--r-- 1 root staff      150 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/framework/__pycache__/__init__.cpython-38.pyc
+-rw-r--r-- 1 root staff       26 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/_grpcio_metadata.py
+-rw-r--r-- 1 root staff    81137 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/__init__.py
+-rw-r--r-- 1 root staff    24938 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/_interceptor.py
+drwxr-sr-x 2 root staff     4096 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpcio-1.62.0.dist-info
+-rw-r--r-- 1 root staff        4 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpcio-1.62.0.dist-info/INSTALLER
+-rw-r--r-- 1 root staff    29687 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpcio-1.62.0.dist-info/LICENSE
+-rw-r--r-- 1 root staff     4046 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpcio-1.62.0.dist-info/METADATA
+-rw-r--r-- 1 root staff     8558 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpcio-1.62.0.dist-info/RECORD
+-rw-r--r-- 1 root staff        5 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpcio-1.62.0.dist-info/top_level.txt
+-rw-r--r-- 1 root staff      148 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpcio-1.62.0.dist-info/WHEEL
+-rw-r--r-- 1 root staff    10249 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/_observability.py
+-rw-r--r-- 1 root staff     4382 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/_plugin_wrapping.py
+drwxr-sr-x 2 root staff     4096 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__
+-rw-r--r-- 1 root staff     2218 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__/_auth.cpython-38.pyc
+-rw-r--r-- 1 root staff    53195 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__/_channel.cpython-38.pyc
+-rw-r--r-- 1 root staff     5804 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__/_common.cpython-38.pyc
+-rw-r--r-- 1 root staff     1457 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__/_compression.cpython-38.pyc
+-rw-r--r-- 1 root staff      170 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__/_grpcio_metadata.cpython-38.pyc
+-rw-r--r-- 1 root staff    80886 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__/__init__.cpython-38.pyc
+-rw-r--r-- 1 root staff    20175 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__/_interceptor.cpython-38.pyc
+-rw-r--r-- 1 root staff    10457 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__/_observability.cpython-38.pyc
+-rw-r--r-- 1 root staff     3519 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__/_plugin_wrapping.cpython-38.pyc
+-rw-r--r-- 1 root staff     5159 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__/_runtime_protos.cpython-38.pyc
+-rw-r--r-- 1 root staff    33497 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__/_server.cpython-38.pyc
+-rw-r--r-- 1 root staff    18006 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__/_simple_stubs.cpython-38.pyc
+-rw-r--r-- 1 root staff     1481 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__/_typing.cpython-38.pyc
+-rw-r--r-- 1 root staff     5868 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/__pycache__/_utilities.cpython-38.pyc
+-rw-r--r-- 1 root staff     5810 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/_runtime_protos.py
+-rw-r--r-- 1 root staff    46112 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/_server.py
+-rw-r--r-- 1 root staff    22865 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/_simple_stubs.py
+-rw-r--r-- 1 root staff     2758 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/_typing.py
+-rw-r--r-- 1 root staff     6063 2月  27 14:41 /usr/local/lib/python3.8/dist-packages/grpc/_utilities.py
++ echo ----------------------------------------------------------------------
+----------------------------------------------------------------------
++ cd /home/guang/zsy/p4
++ DETS=install-details
++ mkdir -p install-details
++ mv usr-local-1-before-protobuf.txt usr-local-7-after-mininet-install.txt install-details
++ cd install-details

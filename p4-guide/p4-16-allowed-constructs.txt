@@ -1,0 +1,137 @@
+The contents of this document have been compared against Appendix F
+"Restrictions on compile time and run time calls" of the P4_16
+language specification v1.2.4 as of this git commit on 2023-May-15,
+and they appear to match each other:
+
+$ git clone https://github.com/p4lang/p4-spec
+$ git checkout 6536ac4475226d79a4783a1511de63447cbac165
+
+
+TBD to add:
+* extern function declaration
+* extern function call
+
+
+[*] Mark on things that are only allowed in, or most useful within,
+    architecture model files.
+
+top level
+    [*] type declarations for parser, control, package
+    [*] extern function and object declarations
+    const
+    typedef
+    header
+    header stack
+    header_union
+    struct
+    enum
+    error
+    match_kind
+    instantiation of extern object, parser value set
+    instantiation of package (there must be one named 'main')
+    function definition
+        const, variable decl, assignment, function call, return <expression>
+        extern call (object method, or function)
+        if
+            anything allowed directly inside function
+        NO: action call, exit
+    action - see 'action' below
+    NO: instantiation of control block, parser
+    NO: variable decl
+    NO: state, table
+    parser
+        const, variable decl
+        instantiation of extern object, parser, parser value set
+        NO: instantiation of control block
+        state
+            const, variable decl, assignment, function call
+            NO: action call, exit
+            extern call (object method, or function.  p4test allows, p4c-bm2-ss allows some, e.g. packet.extract(), but not others, e.g. count1.count() TBD: how does it decide which?)
+            <subparser>.apply()
+            block statement { }
+                anything allowed directly inside state
+            if statement
+                anything allowed directly inside state
+            transition <statename> (must be last in state definition)
+            transition select .... (must be last in state definition)
+                call to a parser value set, as a key set expression
+            NO: type definitions
+            NO: switch, return, exit
+            NO: parser, state, action, table, control
+    control
+        const, variable decl
+        instantiation of extern object, control block
+        NO: instantiation of parser, parser value set
+        action
+            const, variable decl, assignment, function call, action call
+            extern call (object method, or function)
+            return, exit
+            if - Note that P4_16 language spec warns that implementations need not support 'if' inside of actions.
+                anything allowed directly inside action
+            block statement { }
+                anything allowed directly inside action
+            NO: type definitions
+            NO: switch, transition
+            NO: parser, state, action, table, control
+        table
+            key = { ... }
+            actions = { <action_spec>; ... }
+            default_action = <action_spec>;
+        apply { } (body of control block)
+            const, variable decl, assignment, function call, action call
+            extern call (object method, or function)
+            <table>.apply()
+            <control_name>.apply()
+            switch (<table>.apply().action_run) { ... }
+                anything allowed directly inside control body apply { }
+            return, exit
+            if
+                anything allowed directly inside control body apply { }
+            block statement { }
+                anything allowed directly inside control body apply { }
+            NO: type definitions
+            NO: transition
+            NO: parser, state, action, table, control
+
+
+The table below lists all types that may appear as members of headers,
+header unions, structs, and tuples.  Note that int means an
+infinite-precision integer, without a width specified.
+
+The two-argument extract method on packets only supports a single
+varbit field in a header.
+
+See the table in the P4_16 language specification Section 7.2.8 "Type
+nesting rules" for which types can be declared as parts of other
+types.
+
+
+----------------------------------------------------------------------
+Type declarations for parser, control, package
+----------------------------------------------------------------------
+
+Type declarations for parsers, controls, and packages do not define
+the behavior of those things, nor do they instantiate such a thing.
+They only declare the thing's signature.
+
+All of them have the general syntax like this, with the only
+difference being the keyword 'parser', 'control', or 'package':
+
+    [ <annotation> ] control <name> [ <type parameters> ] ( <parameters> );
+
+Relevant symbols in grammar:
+    parserTypeDeclaration
+    controlTypeDeclaration
+    packageTypeDeclaration
+
+Examples, from file "very_simple_model.p4" in P4_16 spec:
+
+   parser Parser<H>(packet_in b,
+                    out H parsedHeaders);
+   control Pipe<H>(inout H headers,
+                   in error parseError,     // parser error
+                   in InControl inCtrl,     // input port
+                   out OutControl outCtrl); // output port
+   package VSS<H>(Parser<H> p,
+                  Pipe<H> map,
+                  Deparser<H> d);
